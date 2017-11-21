@@ -19,8 +19,8 @@ echo "This script will now install the AzureRM Modules..."
 echo .
 
 #Azure RM NetCore Preview Module Install
-sudo powershell -Command {Install-Module -Name AzureRM.Netcore}
-sudo powershell -Command {Import-Module -Name AzureRM.Netcore}
+sudo pwsh -Command {Install-Module -Name AzureRM.Netcore}
+sudo pwsh -Command {Import-Module -Name AzureRM.Netcore}
 
 if [[ $? -eq 0 ]]
     then
