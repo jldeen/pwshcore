@@ -13,7 +13,7 @@ echo "This script will now install the latest version of PowerShell Core via bre
 echo .
 
 # brew powershell core install
-brew cask install powershell
+brew cask install powershell && echo "The latest version of PowerShell Core has been installed."
 
 echo "This script will now install the AzureRM Modules..."
 echo .

@@ -12,7 +12,7 @@ curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list | sudo tee /et
 sudo apt-get update
 
 # Install PowerShell
-sudo apt-get install -y powershell && echo "The latest version of Powershell Core ha been installed..."
+sudo apt-get install -y powershell && echo "The latest version of Powershell Core has been installed..."
 echo .
 
 echo "This script will now install the AzureRM Modules..."
