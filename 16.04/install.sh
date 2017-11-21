@@ -19,6 +19,7 @@ echo "This script will now install the AzureRM Modules..."
 echo .
 
 #Azure RM NetCore Preview Module Install
+sudo pwsh -Command Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
 sudo pwsh -Command Install-Module -Name AzureRM.Netcore
 sudo pwsh -Command Import-Module -Name AzureRM.Netcore
 
