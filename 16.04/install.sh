@@ -1,19 +1,44 @@
 #!/bin/bash
 
-## Test environment Selector
-    DISTROS=$(whiptail --title "PowerShell Core Installer" --menu --radiolist \
-    "What is your environment?" 15 60 4 \
-    "Ubuntu" "14.04" OFF \
-    "Ubuntu" "16.04" ON \
-    "Ubuntu" "17.04" OFF \
-    "macOS" OFF 3>&1 1>&2 2>&3)
-    
-    exitstatus=$?
-    if [ $exitstatus = 0 ]; then
-        echo "The environment you selected for install is:" $DISTROS
-    else
-        echo "You chose Cancel."
-    fi
+whiptail --title "PowerShelL Core Installer" --yesno --defaultno "Install PowerShell Core" 8 78
+ 
+exitstatus=$?
+if [ $exitstatus = 0 ]; then
+    status="0"
+    while [ "$status" -eq 0 ]  
+    do
+        choice=$(whiptail --title "Environment Selection" --menu "Please choose your environment" 16 78 5 \
+        "ubuntu14" "14.04" \
+        "ubuntu16" "16.04" \
+        "ubuntu17" "17.04" \
+        "macOS" 3>&2 2>&1 1>&3) 
+         
+        # Change to lower case and remove spaces.
+        option=$(echo $choice | tr '[:upper:]' '[:lower:]' | sed 's/ //g')
+        case "${option}" in
+            ubuntu14) 
+                whiptail --title "Ubuntu 14.40 PowerShelL Core Install" --msgbox "In first option" 8 78
+            ;;
+            ubuntu16)
+                whiptail --title "Ubuntu 16.40 PowerShelL Core Install" --msgbox "In second option" 8 78
+            ;;
+            ubuntu17)
+                whiptail --title "Ubuntu 17.40 PowerShelL Core Install" --msgbox "In second option" 8 78
+            ;;
+            macOS)
+                whiptail --title "macOS PowerShelL Core Install" --msgbox "In second option" 8 78
+            ;;
+            *) whiptail --title "Testing" --msgbox "You cancelled or have finished." 8 78
+                status=1
+                exit
+            ;;
+        esac
+        exitstatus1=$status1
+    done
+else
+    whiptail --title "PowerShell Core Installer" --msgbox "You chose not to proceed." 8 78
+    exit
+fi
 
 function installPSCore14 {
     echo "This script will install the latest version of PowerShell Core on your Ubuntu 16.04 system...."
