@@ -14,7 +14,11 @@ function envSelection {
     choice=$(whiptail --title "Environment Selection" --menu "Please choose your environment" 16 78 5 \
     "ubuntu14" "14.04" \
     "ubuntu16" "16.04" \
-    "ubuntu17" "17.04" 3>&2 2>&1 1>&3) 
+    "ubuntu17" "17.04" \
+    "debian8" "Debian 8" \
+    "debian" "Debian 9" \
+    "centos7" "CentOS 7" \
+    "rhel7" "RHEL 7" 3>&2 2>&1 1>&3) 
     # Change to lower case and remove spaces.
     option=$(echo $choice | tr '[:upper:]' '[:lower:]' | sed 's/ //g')
     case "${option}" in
@@ -43,6 +47,91 @@ function envselctall {
     end
     exit 0
 }
+function installDebian8 {
+    {
+        # Install system components
+        sudo -s <<< $psw apt-get update
+        sudo -s <<< $psw apt-get install curl apt-transport-https
+
+        # Import the public repository GPG keys
+        curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+
+        # Register the Microsoft Product feed
+        sudo -s <<< $psw sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-debian-jessie-prod jessie main" > /etc/apt/sources.list.d/microsoft.list'
+
+        # Update the list of products
+        sudo -s <<< $psw apt-get update
+
+        # Install PowerShell
+        sudo -s <<< $psw apt-get install -y powershell
+        sleep 1
+        for ((i=0; i<=100; i+=20)); do
+            sleep 1
+            echo $i
+        done
+    } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 14.04" 6 60 0
+    end
+    exit 0
+} 
+function installDebian9 {
+    {
+        # Install system components
+        sudo -s <<< $psw apt-get update
+        sudo -s <<< $psw apt-get install curl gnupg apt-transport-https
+
+        # Import the public repository GPG keys
+        curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+
+        # Register the Microsoft Product feed
+        sudo -s <<< $psw sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-debian-stretch-prod stretch main" > /etc/apt/sources.list.d/microsoft.list'
+
+        # Update the list of products
+        sudo -s <<< $psw apt-get update
+
+        # Install PowerShell
+        sudo -s <<< $psw apt-get install -y powershell
+        sleep 1
+        for ((i=0; i<=100; i+=20)); do
+            sleep 1
+            echo $i
+        done
+    } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 14.04" 6 60 0
+    end
+    exit 0
+} 
+function installCentos7 {
+    {
+        # Import the public repository GPG keys
+        # Register the Microsoft RedHat repository
+        curl -s https://packages.microsoft.com/config/rhel/7/prod.repo | sudo tee /etc/yum.repos.d/microsoft.repo
+
+        # Install PowerShell
+        sudo -s <<< $psw yum install -y powershell
+        sleep 1
+        for ((i=0; i<=100; i+=20)); do
+            sleep 1
+            echo $i
+        done
+    } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for CentOS 7" 6 60 0
+    end
+    exit 0
+}
+function installrhel7 {
+    {
+        # Register the Microsoft RedHat repository
+        curl -s shttps://packages.microsoft.com/config/rhel/7/prod.repo | sudo tee /etc/yum.repos.d/microsoft.repo
+
+        # Install PowerShell
+        sudo -s <<< $psw yum install -y powershell
+        sleep 1
+        for ((i=0; i<=100; i+=20)); do
+            sleep 1
+            echo $i
+        done
+    } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for RHEL 7" 6 60 0
+    end
+    exit 0
+} 
 function installPSCore14 {
     {
         # Import the public repository GPG keys
