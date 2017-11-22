@@ -61,11 +61,14 @@ function envselctall {
 function optInstall {
     choice=$(whiptail --title "Optional Features" --checklist "Please select which features you would like to install" 20 78 15 \
     "azureRM" "AzureRM Modules" ON \
-    "azureCli" "Azure CLI 2.0" OFF 3>&2 2>&1 1>&3) 
+    "azureCli" "Azure CLI 2.0" OFF \
+    "back" "Back to main menu" 3>&2 2>&1 1>&3) 
         case $choice in
             azureRM) installAzureRM
             ;;
             azureCli) installAzCli
+            ;;
+            back) do_main_menu
             ;;
             *) whiptail --title "PowerShell Core Installer" --msgbox "You have chosen to cancel this installation." 8 78
                 status=1
@@ -78,8 +81,8 @@ function installDebian8 {
         # sudo -S - auth sudo in advance
         sudo -S <<< $psw ls > /dev/null 2>&1
         # Install system components
-        sudo -s <<< $psw apt-get update
-        sudo -s <<< $psw apt-get install curl apt-transport-https
+        sudo apt-get update
+        sudo apt-get install curl apt-transport-https
 
         # Import the public repository GPG keys
         curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
@@ -88,10 +91,10 @@ function installDebian8 {
         sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-debian-jessie-prod jessie main" > /etc/apt/sources.list.d/microsoft.list'
 
         # Update the list of products
-        sudo -s <<< $psw apt-get update
+        sudo apt-get update
 
         # Install PowerShell
-        sudo -s <<< $psw apt-get install -y powershell
+        sudo apt-get install -y powershell
         sleep 1
         for ((i=0; i<=100; i+=20)); do
             sleep 1
@@ -105,8 +108,8 @@ function installDebian9 {
         # sudo -S - auth sudo in advance
         sudo -S <<< $psw ls > /dev/null 2>&1
         # Install system components
-        sudo -s <<< $psw apt-get update
-        sudo -s <<< $psw apt-get install curl gnupg apt-transport-https
+        sudo apt-get update
+        sudo apt-get install curl gnupg apt-transport-https
 
         # Import the public repository GPG keys
         curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
@@ -115,10 +118,10 @@ function installDebian9 {
         sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-debian-stretch-prod stretch main" > /etc/apt/sources.list.d/microsoft.list'
 
         # Update the list of products
-        sudo -s <<< $psw apt-get update
+        sudo apt-get update
 
         # Install PowerShell
-        sudo -s <<< $psw apt-get install -y powershell
+        sudo apt-get install -y powershell
         sleep 1
         for ((i=0; i<=100; i+=20)); do
             sleep 1
@@ -136,7 +139,7 @@ function installCentos7 {
         curl -s https://packages.microsoft.com/config/rhel/7/prod.repo | sudo tee /etc/yum.repos.d/microsoft.repo
 
         # Install PowerShell
-        sudo -s <<< $psw yum install -y powershell
+        sudo yum install -y powershell
         sleep 1
         for ((i=0; i<=100; i+=20)); do
             sleep 1
@@ -153,7 +156,7 @@ function installrhel7 {
         curl -s shttps://packages.microsoft.com/config/rhel/7/prod.repo | sudo tee /etc/yum.repos.d/microsoft.repo
 
         # Install PowerShell
-        sudo -S <<< $psw yum install -y powershell
+        sudo yum install -y powershell
         sleep 1
         for ((i=0; i<=100; i+=20)); do
             sleep 1
@@ -171,9 +174,9 @@ function installPSCore14 {
         # Register the Microsoft Ubuntu repository
         curl -s https://packages.microsoft.com/config/ubuntu/14.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
         # Update apt-get
-        sudo -s <<< $psw apt-get update
+        sudo apt-get update
         # Install PowerShell
-        sudo -s <<< $psw apt-get install -y powershell
+        sudo apt-get install -y powershell
         sleep 1
         for ((i=0; i<=100; i+=20)); do
             sleep 1
@@ -191,9 +194,9 @@ function installPSCore16 {
         # Register the Microsoft Ubuntu repository
         curl -s https://packages.microsoft.com/config/ubuntu/16.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
         # Update apt-get
-        sudo -S <<< $psw apt-get update
+        sudo apt-get update
         # Install PowerShell
-        sudo -S <<< $psw apt-get install -y powershell
+        sudo apt-get install -y powershell
         sleep 1
         for ((i=0; i<=100; i+=20)); do
             sleep 1
@@ -212,9 +215,9 @@ function installPSCore17 {
         # Register the Microsoft Ubuntu repository
         curl -s https://packages.microsoft.com/config/ubuntu/17.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
         # Update apt-get
-        sudo -s <<< $psw apt-get update
+        sudo apt-get update
         # Install PowerShell
-        sudo -s <<< $psw apt-get install -y powershell
+        sudo apt-get install -y powershell
         sleep 1
         for ((i=0; i<=100; i+=20)); do
             sleep 1
@@ -225,10 +228,12 @@ function installPSCore17 {
 } 
 function installAzureRM {
     {
+        # sudo -S - auth sudo in advance
+        sudo -S <<< $psw ls > /dev/null 2>&1
         #Azure RM NetCore Preview Module Install
-        sudo -s <<< $psw pwsh -Command Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
-        sudo -s <<< $psw pwsh -Command Install-Module -Name AzureRM.Netcore
-        sudo -s <<< $psw pwsh -Command Import-Module -Name AzureRM.Netcore
+        sudo pwsh -Command Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+        sudo pwsh -Command Install-Module -Name AzureRM.Netcore
+        sudo pwsh -Command Import-Module -Name AzureRM.Netcore
 
         if [[ $? -eq 0 ]]
             then
