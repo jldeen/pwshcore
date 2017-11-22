@@ -139,9 +139,8 @@ function about {
   whiptail --title "About" --msgbox " \
                 PowerShell Core Install Menu Assist
                   written by Jessica Deen
-    This Menu will help install the latest version of PowerShell Core and optional components
-    Run Menu Pick Selections in order and verify successful completion
-    before progressing to next step. 
+    This menu will help install the latest version of PowerShell 
+    Core and optional components if desired.
     For Additional Details See https://github.com/jldeen/pwshcore
     " 35 70 35
 }
