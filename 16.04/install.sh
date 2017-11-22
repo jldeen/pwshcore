@@ -1,6 +1,6 @@
 #!/bin/bash
 
-whiptail --title "PowerShell Core Installer" --yesno --defaultyes "Install latest version of PowerShell Core" 8 78
+whiptail --title "PowerShell Core Installer" --yesno "Install latest version of PowerShell Core" 8 78
  
 exitstatus=$?
 if [ $exitstatus = 0 ]; then
