@@ -8,29 +8,21 @@ if [ $exitstatus = 0 ]; then
     while [ "$status" -eq 0 ]  
     do
         choice=$(whiptail --title "Environment Selection" --menu "Please choose your environment" 16 78 5 \
-        "ubuntu14" "14.04" OFF\
-        "ubuntu16" "16.04" ON \
-        "ubuntu17" "17.04" OFF \
-        "macOS" "macOS 10.12+" OFF 3>&2 2>&1 1>&3) 
+        "ubuntu14" "14.04" \
+        "ubuntu16" "16.04" \
+        "ubuntu17" "17.04" \
+        "macOS" "10.12+" 3>&2 2>&1 1>&3) 
          
         # Change to lower case and remove spaces.
         option=$(echo $choice | tr '[:upper:]' '[:lower:]' | sed 's/ //g')
         case "${option}" in
-            ubuntu14) 
-                whiptail --title "Ubuntu 14.40 PowerShell Core Install" --msgbox "In first option" 8 78
-            installPSCore14
+            ubuntu14) installPSCore14 | whiptail --title "PowerShell Core Install"
             ;;
-            ubuntu16)
-                whiptail --title "Ubuntu 16.40 PowerShell Core Install" --msgbox "In second option" 8 78
-            installPSCore16
+            ubuntu16) installPSCore16 | whiptail --title "PowerShell Core Install"
             ;;
-            ubuntu17)
-                whiptail --title "Ubuntu 17.40 PowerShell Core Install" --msgbox "In second option" 8 78
-            installPSCore17
+            ubuntu17) installPSCore17 | whiptail --title "PowerShell Core Install"
             ;;
-            macos)
-                whiptail --title "macOS PowerShell Core Install" --msgbox "In second option" 8 78
-            installmacOS
+            macos) installmacOS
             ;;
             *) whiptail --title "PowerShell Core Installer" --msgbox "You cancelled or have finished." 8 78
                 status=1
