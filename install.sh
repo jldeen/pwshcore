@@ -109,7 +109,7 @@ function installCentos7 {
     {
         # Import the public repository GPG keys
         # Register the Microsoft RedHat repository
-        curl -s https://packages.microsoft.com/config/rhel/7/prod.repo | sudo tee /etc/yum.repos.d/microsoft.repo
+        curl -s https://packages.microsoft.com/config/rhel/7/prod.repo | sudo -S <<< $psw tee /etc/yum.repos.d/microsoft.repo
 
         # Install PowerShell
         sudo -s <<< $psw yum install -y powershell
@@ -124,7 +124,7 @@ function installCentos7 {
 function installrhel7 {
     {
         # Register the Microsoft RedHat repository
-        curl -s shttps://packages.microsoft.com/config/rhel/7/prod.repo | sudo tee /etc/yum.repos.d/microsoft.repo
+        curl -s shttps://packages.microsoft.com/config/rhel/7/prod.repo | sudo -S <<< $psw tee /etc/yum.repos.d/microsoft.repo
 
         # Install PowerShell
         sudo -s <<< $psw yum install -y powershell
@@ -139,9 +139,9 @@ function installrhel7 {
 function installPSCore14 {
     {
         # Import the public repository GPG keys
-        curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+        curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo -S <<< $psw apt-key add -
         # Register the Microsoft Ubuntu repository
-        curl -s https://packages.microsoft.com/config/ubuntu/14.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
+        curl -s https://packages.microsoft.com/config/ubuntu/14.04/prod.list | sudo -S <<< $psw tee /etc/apt/sources.list.d/microsoft.list
         # Update apt-get
         sudo -s <<< $psw apt-get update
         # Install PowerShell
@@ -175,9 +175,9 @@ function installPSCore16 {
 function installPSCore17 {
    {
         # Import the public repository GPG keys
-        curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+        curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo -S <<< $psw apt-key add -
         # Register the Microsoft Ubuntu repository
-        curl -s https://packages.microsoft.com/config/ubuntu/17.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
+        curl -s https://packages.microsoft.com/config/ubuntu/17.04/prod.list | sudo -S <<< $psw tee /etc/apt/sources.list.d/microsoft.list
         # Update apt-get
         sudo -s <<< $psw apt-get update
         # Install PowerShell
@@ -213,10 +213,10 @@ function installAzureRM {
 function installAzCli {
     {
         echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ wheezy main" | \
-        sudo tee /etc/apt/sources.list.d/azure-cli.list
-        sudo apt-key adv --keyserver packages.microsoft.com --recv-keys 417A0893 > /dev/null 2>&1
-        sudo apt-get install apt-transport-https
-        sudo apt-get update && sudo apt-get install azure-cli
+        sudo -S <<< $psw tee /etc/apt/sources.list.d/azure-cli.list
+        sudo -S <<< $psw apt-key adv --keyserver packages.microsoft.com --recv-keys 417A0893 > /dev/null 2>&1
+        sudo -S <<< $psw apt-get install apt-transport-https
+        sudo -S <<< $psw apt-get update && sudo apt-get install azure-cli
         if [[ $? -eq 0 ]]
         then
             echo "Successfully installed Azure CLI 2.0"
