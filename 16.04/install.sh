@@ -83,81 +83,61 @@ function installPSCore16 {
 } 
 function installPSCore17 {
    {
-        i="0"
-        while (true)
-        do
-            # Import the public repository GPG keys
-            curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-            # Register the Microsoft Ubuntu repository
-            curl -s https://packages.microsoft.com/config/ubuntu/17.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
-            # Update apt-get
-            sudo -s <<< $psw apt-get update
-            # Install PowerShell
-            sudo -s <<< $psw apt-get install -y powershell && echo "The latest version of Powershell Core has been installed..."
+        # Import the public repository GPG keys
+        curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+        # Register the Microsoft Ubuntu repository
+        curl -s https://packages.microsoft.com/config/ubuntu/17.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
+        # Update apt-get
+        sudo -s <<< $psw apt-get update
+        # Install PowerShell
+        sudo -s <<< $psw apt-get install -y powershell && echo "The latest version of Powershell Core has been installed..."
+        sleep 1
+        for ((i=0; i<=100; i+=20)); do
             sleep 1
             echo $i
-            i=$(expr $i + 1)
         done
-        # If it is done then display 100%
-        echo 100
-        # Give it some time to display the progress to the user.
-        sleep 2
-    } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 17.04" 8 78 0
-}
+    }   | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 17.04" 6 60 0
+} 
 function installAzureRM {
     {
-     i="0"
-        while (true)
-        do
-            #Azure RM NetCore Preview Module Install
-            sudo -s <<< $psw pwsh -Command Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
-            sudo -s <<< $psw pwsh -Command Install-Module -Name AzureRM.Netcore
-            sudo -s <<< $psw pwsh -Command Import-Module -Name AzureRM.Netcore
+        #Azure RM NetCore Preview Module Install
+        sudo -s <<< $psw pwsh -Command Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+        sudo -s <<< $psw pwsh -Command Install-Module -Name AzureRM.Netcore
+        sudo -s <<< $psw pwsh -Command Import-Module -Name AzureRM.Netcore
 
-            if [[ $? -eq 0 ]]
-                then
-                    echo "Successfully installed PowerShell Core with AzureRM NetCore Module."
-                else
-                    echo "PowerShell Core with AzureRM NetCore Module did not install successfully." >&2
-            fi
-            echo
-            sleep 1
-            echo $i
-            i=$(expr $i + 1)
+        if [[ $? -eq 0 ]]
+            then
+                echo "Successfully installed PowerShell Core with AzureRM NetCore Module."
+            else
+                echo "PowerShell Core with AzureRM NetCore Module did not install successfully." >&2
+        fi
+        sleep 1
+        for ((i=0; i<=100; i+=20)); do
+        sleep 1
+        echo $i
         done
-        # If it is done then display 100%
-        echo 100
-        # Give it some time to display the progress to the user.
-        sleep 2
     } | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure RM Modules" 8 78 0
 } 
 function installAzCli {
     {
-     i="0"
-        while (true)
-        do
-            echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ wheezy main" | \
-            sudo tee /etc/apt/sources.list.d/azure-cli.list
-            sudo apt-key adv --keyserver packages.microsoft.com --recv-keys 417A0893
-            sudo apt-get install apt-transport-https
-            sudo apt-get update && sudo apt-get install azure-cli
-            if [[ $? -eq 0 ]]
-            then
-                echo "Successfully installed Azure CLI 2.0"
-            else
-                echo "Azure CLI 2.0 not installed successfully" >&2
-            fi
-            echo
+        echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ wheezy main" | \
+        sudo tee /etc/apt/sources.list.d/azure-cli.list
+        sudo apt-key adv --keyserver packages.microsoft.com --recv-keys 417A0893
+        sudo apt-get install apt-transport-https
+        sudo apt-get update && sudo apt-get install azure-cli
+        if [[ $? -eq 0 ]]
+        then
+            echo "Successfully installed Azure CLI 2.0"
+        else
+            echo "Azure CLI 2.0 not installed successfully" >&2
+        fi
+        sleep 1
+        for ((i=0; i<=100; i+=20)); do
             sleep 1
             echo $i
-            i=$(expr $i + 1)
         done
-        # If it is done then display 100%
-        echo 100
-        # Give it some time to display the progress to the user.
-        sleep 2
-    } | whiptail --title "PowerShell Core Installer" --gauge "Installing Azurem CLI 2.0" 8 78 0
-} 
+    }   | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure CLI 2.0" 6 60 0  
+}         
 function about {
   whiptail --title "About" --msgbox " \
                 PowerShell Core Install Menu Assist
