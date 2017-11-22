@@ -1,5 +1,7 @@
 #!/bin/bash
+# script version
 ver=1.0
+# password capture
 psw=$(whiptail --title "Sudo Password Capture" --passwordbox "Sudo required to install PowerShell Core. Please enter your sudo password to proceed with the install." 10 60 3>&1 1>&2 2>&3)
 exitstatus=$?
     if [ $exitstatus = 0 ]; then
@@ -43,9 +45,9 @@ function envselctall {
 function installPSCore14 {
     {
         # Import the public repository GPG keys
-        curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+        curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
         # Register the Microsoft Ubuntu repository
-        curl https://packages.microsoft.com/config/ubuntu/14.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
+        curl -s https://packages.microsoft.com/config/ubuntu/14.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
         # Update apt-get
         sudo -s <<< $psw apt-get update
         # Install PowerShell
@@ -65,9 +67,9 @@ function installPSCore14 {
 function installPSCore16 {
     {
         # Import the public repository GPG keys
-        curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+        curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
         # Register the Microsoft Ubuntu repository
-        curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
+        curl -s https://packages.microsoft.com/config/ubuntu/16.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
         # Update apt-get
         sudo -s <<< $psw apt-get update
         # Install PowerShell
@@ -85,9 +87,9 @@ function installPSCore17 {
         while (true)
         do
             # Import the public repository GPG keys
-            curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+            curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
             # Register the Microsoft Ubuntu repository
-            curl https://packages.microsoft.com/config/ubuntu/17.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
+            curl -s https://packages.microsoft.com/config/ubuntu/17.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
             # Update apt-get
             sudo -s <<< $psw apt-get update
             # Install PowerShell
