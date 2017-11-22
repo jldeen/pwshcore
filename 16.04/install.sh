@@ -132,7 +132,7 @@ if [ $exitstatus = 0 ]; then
         case "${option}" in
             ubuntu14) installPSCore14 | whiptail --title "PowerShell Core Install"
             ;;
-            ubuntu16) installPSCore16
+            ubuntu16) installPSCore16 | whiptail --title "PowerShell Core Install"
             ;;
             ubuntu17) installPSCore17 | whiptail --title "PowerShell Core Install"
             ;;
