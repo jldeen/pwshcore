@@ -90,9 +90,12 @@ function rpmCheck {
         sleep 1
         echo $i
     done
-    do_main_menu
     fi
     } | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure CLI 2.0 for RHEL" 6 60 0
+    if [ $? -eq 0 ]; then
+    whiptail --title "PowerShell Core Installation" --msgbox "Azure CLI 2.0 for RHEL successfully installed!" 8 78
+    do_main_menu
+    fi
 } 
 function installDebian8 {
     {
