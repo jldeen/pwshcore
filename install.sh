@@ -2,6 +2,7 @@
 # script version
 ver=1.0
 # password capture
+[ $UID != 0 ] && exec sudo $0 "$@"
 psw=$(whiptail --title "PowerShell Core Install | Sudo Password Capture" --passwordbox "Sudo is required to install PowerShell Core. Please enter your sudo password to proceed with the install." 10 60 3>&1 1>&2 2>&3)
 exitstatus=$?
     if [ $exitstatus = 0 ]; then
@@ -166,7 +167,7 @@ function installPSCore16 {
         # Register the Microsoft Ubuntu repository
         curl -s https://packages.microsoft.com/config/ubuntu/16.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
         # Update apt-get
-        sudo -s <<< $psw apt-get update
+        sudo -S <<< $psw apt-get update
         # Install PowerShell
         sudo -s <<< $psw apt-get install -y powershell
         sleep 1
