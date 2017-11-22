@@ -20,28 +20,16 @@ echo "This script will now install the AzureRM Modules..."
 echo .
 
 #Azure RM NetCore Preview Module Install
-sudo pwsh -Command Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
-sudo pwsh -Command Install-Module -Name AzureRM.Netcore
-sudo pwsh -Command Import-Module -Name AzureRM.Netcore
-    phases=( 
-    'Installing PowerShell Core....'
-    'Installing AzureRM Modules...'
-    'Importing Azure RM Modules...'
-    'Installing Azure CLI 2.0...'
-    )   
 
-    for i in $(seq 1 100); do  
-        sleep 0.1
-
-        if [ $i -eq 100 ]; then
-            echo -e "XXX\n100\nDone!\nXXX"
-        elif [ $(($i % 25)) -eq 0 ]; then
-            let "phase = $i / 25"
-            echo -e "XXX\n$i\n${phases[phase]}\nXXX"
-        else
-            echo $i
-        fi 
-    done | whiptail --title 'PowerShell Core Setup' --gauge "${phases[0]}" 6 60 0
+{
+    sudo pwsh -Command Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+    sudo pwsh -Command Install-Module -Name AzureRM.Netcore
+    sudo pwsh -Command Import-Module -Name AzureRM.Netcore
+    for ((i = 0 ; i <= 100 ; i+=20)); do
+        sleep 1
+        echo $i
+    done
+} | whiptail --gauge "Please wait while installing..." 6 60 0
 
 if [[ $? -eq 0 ]]
     then
