@@ -55,6 +55,24 @@ function envselctall {
     end
     exit 0
 }
+function optInstall {
+    choice=$(whiptail --title "Optional Features" --checklist "Please select which features you would like to install" 16 78 5 \
+    "azureRM" "AzureRM Modules" on \
+    "azureCli" "Azure CLI 2.0" off 3>&2 2>&1 1>&3) 
+
+    # Change to lower case and remove spaces.
+    option=$(echo $choice | tr '[:upper:]' '[:lower:]' | sed 's/ //g')
+    case "${option}" in
+        azureRM) installAzureRM
+        ;;
+        azureCli) installAzCli
+        ;;
+        *) whiptail --title "PowerShell Core Installer" --msgbox "You have chosen to cancel this installation." 8 78
+            status=1
+            exit
+        ;;
+    esac
+}
 function installDebian8 {
     {
         # sudo -S - auth sudo in advance
@@ -272,7 +290,7 @@ function do_main_menu ()
     "a " "PowerShell Core Install Only" \
     "b " "PowerShell Core Install + AzureRM Modules" \
     "c " "PowerShell Core Install + AzureRM Modules and Azure CLI 2.0" \
-    "d " ""
+    "d " "Optional Components Menu" \
     "f " "About" \
     "q " "Quit Menu Back to Console"  3>&1 1>&2 2>&3)
 
@@ -284,6 +302,7 @@ function do_main_menu ()
         a\ *) envSelection ;;
         b\ *) envSelectazrm ;;
         c\ *) envselctall ;;
+        d\ *) optInstall ;;
         f\ *) about ;;
         q\ *) exit 0 ;;
             *) whiptail --msgbox "Programmer error: unrecognized option" 20 60 1 ;;
