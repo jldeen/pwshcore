@@ -75,10 +75,8 @@ function optInstall {
             ;;
         esac
 }
-function rpmCheck {
+function rpmAzInstall {
     {
-    rpm -qa '*release*' > /dev/null 2>&1 
-    if [ $? -eq 0 ]; then
         # sudo -S - auth sudo in advance
         sudo -S <<< $psw ls > /dev/null 2>&1
         sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
@@ -92,10 +90,6 @@ function rpmCheck {
     done
     fi
     } | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure CLI 2.0 for RHEL" 6 60 0
-    if [ $? -eq 0 ]; then
-    whiptail --title "PowerShell Core Installation" --msgbox "Azure CLI 2.0 for RHEL successfully installed!" 8 78
-    do_main_menu
-    fi
 } 
 function installDebian8 {
     {
@@ -272,7 +266,10 @@ function installAzureRM {
 } 
 function installAzCli {
     {  
-        rpmCheck
+        rpm -qa '*release*' > /dev/null 2>&1 
+        if [ $? -eq 0 ]; then
+        rpmAzInstall
+        fi
         # sudo -S - auth sudo in advance
         sudo -S <<< $psw ls > /dev/null 2>&1
         echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ wheezy main" | \
