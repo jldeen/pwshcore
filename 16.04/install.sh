@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ## Test environment Selector
-    DISTROS=$(whiptail --title "PowerShell Core Installer" --radiolist \
+    DISTROS=$(whiptail --title "PowerShell Core Installer" --menu --radiolist \
     "What is your environment?" 15 60 4 \
     "Ubuntu" "14.04" OFF \
     "Ubuntu" "16.04" OFF \
