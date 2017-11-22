@@ -16,7 +16,7 @@ function envSelection {
     "ubuntu16" "16.04" \
     "ubuntu17" "17.04" \
     "debian8" "Debian 8" \
-    "debian" "Debian 9" \
+    "debian9" "Debian 9" \
     "centos7" "CentOS 7" \
     "rhel7" "RHEL 7" 3>&2 2>&1 1>&3) 
     # Change to lower case and remove spaces.
@@ -27,6 +27,14 @@ function envSelection {
         ubuntu16) installPSCore16
         ;;
         ubuntu17) installPSCore17
+        ;;
+        debian8) installDebian8
+        ;;
+        debian9) installDebian9
+        ;;
+        centos7) installCentos7
+        ;;
+        rhel7) installrhel7
         ;;
         *) whiptail --title "PowerShell Core Installer" --msgbox "You cancelled or have finished." 8 78
             status=1
