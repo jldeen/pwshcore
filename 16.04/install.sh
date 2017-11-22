@@ -24,12 +24,6 @@ function envSelection {
             exit
         ;;
     esac
-    exitstatus1=$status1
-done
-else
-whiptail --title "PowerShell Core Installer" --msgbox "You chose not to proceed." 8 78
-exit
-fi
 }
 
 function do_cv3_compile ()
