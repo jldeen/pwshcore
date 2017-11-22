@@ -15,7 +15,6 @@ function envSelection {
     "ubuntu14" "14.04" \
     "ubuntu16" "16.04" \
     "ubuntu17" "17.04" 3>&2 2>&1 1>&3) 
-    
     # Change to lower case and remove spaces.
     option=$(echo $choice | tr '[:upper:]' '[:lower:]' | sed 's/ //g')
     case "${option}" in
@@ -53,7 +52,7 @@ function installPSCore14 {
         # Update apt-get
         sudo -s <<< $psw apt-get update
         # Install PowerShell
-        sudo -s <<< $psw apt-get install -y powershell && echo "The latest version of Powershell Core has been installed..."
+        sudo -s <<< $psw apt-get install -y powershell
         sleep 1
         for ((i=0; i<=100; i+=20)); do
             sleep 1
@@ -72,7 +71,7 @@ function installPSCore16 {
         # Update apt-get
         sudo -s <<< $psw apt-get update
         # Install PowerShell
-        sudo -s <<< $psw apt-get install -y powershell && echo "The latest version of Powershell Core has been installed..."
+        sudo -s <<< $psw apt-get install -y powershell
         sleep 1
         for ((i=0; i<=100; i+=20)); do
             sleep 1
@@ -91,7 +90,7 @@ function installPSCore17 {
         # Update apt-get
         sudo -s <<< $psw apt-get update
         # Install PowerShell
-        sudo -s <<< $psw apt-get install -y powershell && echo "The latest version of Powershell Core has been installed..."
+        sudo -s <<< $psw apt-get install -y powershell
         sleep 1
         for ((i=0; i<=100; i+=20)); do
             sleep 1
