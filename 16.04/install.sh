@@ -25,65 +25,6 @@ function envSelection {
         ;;
     esac
 }
-
-function do_cv3_compile ()
-    {
-    echo "Running cmake prior to compiling opencv 3.2.0"
-    echo "---------------------------------------------"
-    build_dir='/home/pi/opencv-3.2.0/build/'
-    if [ ! -d "$build_dir" ] ; then
-        echo "Create build directory $build_dir"
-        mkdir $build_dir
-    fi
-    cd $build_dir  
-    echo "cmake Will Take a Few minutes ...."  
-    echo "Note: At configuring done step you may have to wait a while"
-    echo "so be patient ...."
-    echo "---------------------------------------------"  
-    read -p "Press Enter to Continue"
-    
-    cmake -D CMAKE_BUILD_TYPE=RELEASE \
-        -D CMAKE_INSTALL_PREFIX=/usr/local \
-        -D INSTALL_C_EXAMPLES=OFF \
-        -D INSTALL_PYTHON_EXAMPLES=ON \
-        -D OPENCV_EXTRA_MODULES_PATH=~/opencv_contrib-3.2.0/modules \
-        -D BUILD_EXAMPLES=ON \
-        -D ENABLE_NEON=ON ..
-
-        echo "---------------------------------------"
-        echo " Review cmake messages above for Errors"
-        echo "---------------------------------------"
-        echo "y) Starts compile of opencv 3.2.0 from source"
-        echo "n) Does a make clean ready for next cmake attempt, once problem resolved."
-        read -p "Was cmake Successful (y/n)? " choice
-        echo "---------------------------------------"    
-        case "$choice" in
-            y|Y ) echo "IMPORTANT"
-                echo "---------"
-                echo "Compile of openCV ver 3.2.0 will take approx 3 to 4 hours ...."  
-                echo "Once Compile is started go for a nice long walk"
-                echo "or Binge watch Game of Thrones or Something Else....."
-                echo ""
-                make -j1
-                echo "--------------------------------------------"
-                echo " Check above for Compile Errors"
-                echo "--------------------------------------------"
-                echo "If Errors Please Investigate Problem"
-                echo "If OK Select Menu Pick: Run make install"
-                do_anykey
-                ;;
-            n|N ) echo "If cmake Failed. Investigate Problem and Try again"
-                sudo make clean
-                echo "Done make clean"
-                echo "Ready to Try full compile once problem resolved."
-                do_anykey
-                ;;
-            * ) echo "invalid Selection"
-                ;;
-        esac
-    }
-
-
 function installPSCore14 {
     echo "This script will install the latest version of PowerShell Core on your Ubuntu 16.04 system...."
     echo .
@@ -157,6 +98,15 @@ function installmacOS {
     # brew powershell core install
     brew cask install powershell && echo "The latest version of PowerShell Core has been installed."
 }
+function envSelectazrm {
+    envSelection 
+    installAzureRM
+}
+function envselctall {
+    envSelection
+    installAzureRM
+    installAzCli
+}
 function installAzureRM {
     echo "This script will now install the AzureRM Modules..."
     echo .
@@ -225,9 +175,9 @@ function do_main_menu ()
   elif [ $RET -eq 0 ]; then
     case "$SELECTION" in
       a\ *) envSelection;;
-      b\ *) do_cv3_dep ;;
-      c\ *) do_cv3_compile ;;
-      f\ *) do_about ;;
+      b\ *) envSelectazrm ;;
+      c\ *) envselctall ;;
+      f\ *) about ;;
       q\ *) echo "NOTE"
             echo "After PowerShell Core Installation is Complete"
             echo "      Reboot to Finalize Install"
