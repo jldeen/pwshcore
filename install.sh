@@ -171,6 +171,7 @@ function installPSCore16 {
         done
     }   | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 16.04" 6 60 0
     end
+    endCheck
 } 
 function installPSCore17 {
    {
@@ -241,6 +242,12 @@ function about {
 }
 function end {
     whiptail --title "PowerShell Core Installation" --msgbox "PowerShell Core Installer has completed successfully." 8 78
+}
+function endCheck {
+    if [[ "$SELECTION" = "a" ]]; then
+        exit 0
+    fi
+
 }
 #------------------------------------------------------------------------------
 function do_main_menu ()
