@@ -5,7 +5,7 @@ ver=1.0
 psw=$(whiptail --title "Sudo Password Capture" --passwordbox "Sudo required to install PowerShell Core. Please enter your sudo password to proceed with the install." 10 60 3>&1 1>&2 2>&3)
 exitstatus=$?
     if [ $exitstatus = 0 ]; then
-        do_main_menu
+        echo "Sudo password captured!"
     else
         #Password if cancelled
         whiptail --title "PowerShell Core Installation" --msgbox "Sudo password not captured, install Cancelled" 10 60
