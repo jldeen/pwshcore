@@ -251,6 +251,7 @@ function installAzureRM {
 function installAzCli {
     {
         function rpmCliCheck {
+            {
             rpm -qa '*release*' > /dev/null 2>&1 
             if [ $? -eq 0 ]; then
                 # sudo -S - auth sudo in advance
@@ -260,7 +261,8 @@ function installAzCli {
                 yum check-update
                 sudo yum install azure-cli
             fi
-        } | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure CLI 2.0 for RHEL" 6 60 0 
+            } | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure CLI 2.0 for RHEL" 6 60 0
+        }  
         rpmCliCheck
         # sudo -S - auth sudo in advance
         sudo -S <<< $psw ls > /dev/null 2>&1
