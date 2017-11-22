@@ -11,13 +11,13 @@ function envSelection {
     # Change to lower case and remove spaces.
     option=$(echo $choice | tr '[:upper:]' '[:lower:]' | sed 's/ //g')
     case "${option}" in
-        ubuntu14) installPSCore14 | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 14.04" 20 70 0
+        ubuntu14) installPSCore14
         ;;
-        ubuntu16) installPSCore16 | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 16.04" 20 70 0
+        ubuntu16) installPSCore16
         ;;
-        ubuntu17) installPSCore17 | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 14.04" 20 70 0
+        ubuntu17) installPSCore17
         ;;
-        macos) installmacOS | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for macOS 10.12+" 20 70 0
+        macos) installmacOS
         ;;
         *) whiptail --title "PowerShell Core Installer" --msgbox "You cancelled or have finished." 8 78
             status=1
@@ -27,13 +27,13 @@ function envSelection {
 }
 function envSelectazrm {
     envSelection
-    installAzureRM | whiptail --title "Azure RM Modules Installer" --gauge "Installing Azure RM Modules" 20 70 0
+    installAzureRM
     exit 0 && echo "Completed install!"
 }
 function envselctall {
     envSelection
-    installAzureRM | whiptail --title "Azure RM Modules Installer" --gauge "Installing Azure RM Modules" 20 70 0
-    installAzCli | whiptail --title "Azure CLI 2.0 Installer" --gauge "Installing Azure CLI 2.0" 20 70 0
+    installAzureRM
+    installAzCli
     exit 0 && echo "Completed install"
 }
 function installPSCore14 {
@@ -61,7 +61,7 @@ function installPSCore14 {
         echo 100
         # Give it some time to display the progress to the user.
         sleep 2
-    }
+    } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 14.04" 8 78 0
 }
 function installPSCore16 {
     {
@@ -88,8 +88,8 @@ function installPSCore16 {
         echo 100
         # Give it some time to display the progress to the user.
         sleep 2
-    }
-}
+    } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 16.04" 8 78 0
+} 
 function installPSCore17 {
    {
         i="0"
@@ -115,7 +115,7 @@ function installPSCore17 {
         echo 100
         # Give it some time to display the progress to the user.
         sleep 2
-    }
+    } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 17.04" 8 78 0
 }
 function installmacOS {
     {
@@ -140,8 +140,8 @@ function installmacOS {
         echo 100
         # Give it some time to display the progress to the user.
         sleep 2
-    }
-}
+    } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for macOS 10.12+" 8 78 0
+} 
 function installAzureRM {
     {
      i="0"
@@ -167,8 +167,8 @@ function installAzureRM {
         echo 100
         # Give it some time to display the progress to the user.
         sleep 2
-    }
-}
+    } | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure RM Modules" 8 78 0
+} 
 function installAzCli {
     {
      i="0"
@@ -205,8 +205,8 @@ function installAzCli {
         echo 100
         # Give it some time to display the progress to the user.
         sleep 2
-    }
-}
+    } | whiptail --title "PowerShell Core Installer" --gauge "Installing Azurem CLI 2.0" 8 78 0
+} 
 function about {
   whiptail --title "About" --msgbox " \
                 PowerShell Core Install Menu Assist
