@@ -17,11 +17,11 @@ function envSelection {
     # Change to lower case and remove spaces.
     option=$(echo $choice | tr '[:upper:]' '[:lower:]' | sed 's/ //g')
     case "${option}" in
-        ubuntu14) sudo -S <<< $psw installPSCore14
+        ubuntu14) installPSCore14
         ;;
-        ubuntu16) sudo -S <<< $psw installPSCore16
+        ubuntu16) installPSCore16
         ;;
-        ubuntu17) sudo -S <<< $psw installPSCore17
+        ubuntu17) installPSCore17
         ;;
         *) whiptail --title "PowerShell Core Installer" --msgbox "You cancelled or have finished." 8 78
             status=1
@@ -31,13 +31,13 @@ function envSelection {
 }
 function envSelectazrm {
     envSelection
-    sudo -s <<< $psw installAzureRM
+    installAzureRM
     exit 0 && echo "Completed install!"
 }
 function envselctall {
     envSelection
-    sudo -s <<< $psw installAzureRM
-    sudo -s <<< $psw installAzCli
+    installAzureRM
+    installAzCli
     exit 0 && echo "Completed install"
 }
 function installPSCore14 {
@@ -47,9 +47,9 @@ function installPSCore14 {
         # Register the Microsoft Ubuntu repository
         curl https://packages.microsoft.com/config/ubuntu/14.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
         # Update apt-get
-        sudo apt-get update
+        sudo -s <<< $psw apt-get update
         # Install PowerShell
-        sudo apt-get install -y powershell && echo "The latest version of Powershell Core has been installed..."
+        sudo -s <<< $psw apt-get install -y powershell && echo "The latest version of Powershell Core has been installed..."
         sleep 1
         for ((i=0; i<=100; i+=20)); do
             sleep 1
@@ -69,9 +69,9 @@ function installPSCore16 {
         # Register the Microsoft Ubuntu repository
         curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
         # Update apt-get
-        sudo apt-get update
+        sudo -s <<< $psw apt-get update
         # Install PowerShell
-        sudo apt-get install -y powershell && echo "The latest version of Powershell Core has been installed..."
+        sudo -s <<< $psw apt-get install -y powershell && echo "The latest version of Powershell Core has been installed..."
         sleep 1
         for ((i=0; i<=100; i+=20)); do
             sleep 1
@@ -89,9 +89,9 @@ function installPSCore17 {
             # Register the Microsoft Ubuntu repository
             curl https://packages.microsoft.com/config/ubuntu/17.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
             # Update apt-get
-            sudo apt-get update
+            sudo -s <<< $psw apt-get update
             # Install PowerShell
-            sudo apt-get install -y powershell && echo "The latest version of Powershell Core has been installed..."
+            sudo -s <<< $psw apt-get install -y powershell && echo "The latest version of Powershell Core has been installed..."
             sleep 1
             echo $i
             i=$(expr $i + 1)
@@ -108,9 +108,9 @@ function installAzureRM {
         while (true)
         do
             #Azure RM NetCore Preview Module Install
-            sudo pwsh -Command Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
-            sudo pwsh -Command Install-Module -Name AzureRM.Netcore
-            sudo pwsh -Command Import-Module -Name AzureRM.Netcore
+            sudo -s <<< $psw pwsh -Command Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+            sudo -s <<< $psw pwsh -Command Install-Module -Name AzureRM.Netcore
+            sudo -s <<< $psw pwsh -Command Import-Module -Name AzureRM.Netcore
 
             if [[ $? -eq 0 ]]
                 then
@@ -165,7 +165,6 @@ function about {
     before progressing to next step. 
     For Additional Details See https://github.com/jldeen/pwshcore
     " 35 70 35
-
 }
 #------------------------------------------------------------------------------
 function do_main_menu ()
