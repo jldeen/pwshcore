@@ -60,21 +60,18 @@ function envselctall {
 }
 function optInstall {
     choice=$(whiptail --title "Optional Features" --checklist "Please select which features you would like to install" 20 78 15 \
-    "azureRM" "AzureRM Modules" on \
-    "azureCli" "Azure CLI 2.0" off 3>&2 2>&1 1>&3) 
-    while read choice
-    do
-            case $choice in
-                azureRM) installAzureRM
-                ;;
-                azureCli) installAzCli
-                ;;
-                *) whiptail --title "PowerShell Core Installer" --msgbox "You have chosen to cancel this installation." 8 78
-                    status=1
-                    exit
-                ;;
-            esac
-    done
+    "azureRM" "AzureRM Modules" ON \
+    "azureCli" "Azure CLI 2.0" OFF 3>&2 2>&1 1>&3) 
+        case $choice in
+            azureRM) installAzureRM
+            ;;
+            azureCli) installAzCli
+            ;;
+            *) whiptail --title "PowerShell Core Installer" --msgbox "You have chosen to cancel this installation." 8 78
+                status=1
+                exit
+            ;;
+        esac
 }
 function installDebian8 {
     {
