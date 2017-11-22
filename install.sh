@@ -59,7 +59,7 @@ function envselctall {
     exit 0
 }
 function optInstall {
-    choice=$(whiptail --title "Optional Features" --menu "Please choose which components you would like to install" 16 78 5 20 78 15 \
+    choice=$(whiptail --title "Optional Features" --menu "Please choose which components you would like to install" 16 78 5 \
     "azureRM" "AzureRM Modules" \
     "azureCli" "Azure CLI 2.0" 3>&2 2>&1 1>&3) 
         case $choice in
@@ -251,6 +251,19 @@ function installAzureRM {
 } 
 function installAzCli {
     {
+        function rpmCliCheck {
+            rpm -qa '*release*' > /dev/null 2>&1 
+            if [ $? -eq 0 ]; then
+                # sudo -S - auth sudo in advance
+                sudo -S <<< $psw ls > /dev/null 2>&1
+                sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+                sudo sh -c 'echo -e "[azure-cli]\nname=Azure CLI\nbaseurl=https://packages.microsoft.com/yumrepos/azure-cli\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/azure-cli.repo'
+                yum check-update
+                sudo yum install azure-cli
+            fi
+
+        }
+        rpmCliCheck
         # sudo -S - auth sudo in advance
         sudo -S <<< $psw ls > /dev/null 2>&1
         echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ wheezy main" | \
