@@ -42,8 +42,6 @@ function installPSCore14 {
         i="0"
         while (true)
         do
-            echo "This script will install the latest version of PowerShell Core on your Ubuntu 14.04 system...."
-            echo .
             # Import the public repository GPG keys
             curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
             # Register the Microsoft Ubuntu repository
@@ -51,9 +49,7 @@ function installPSCore14 {
             # Update apt-get
             sudo apt-get update
             # Install PowerShell
-            echo .
             sudo apt-get install -y powershell && echo "The latest version of Powershell Core has been installed..."
-            echo .
             sleep 1
             echo $i
             i=$(expr $i + 1)
@@ -69,8 +65,6 @@ function installPSCore16 {
      i="0"
         while (true)
         do
-            echo "This script will install the latest version of PowerShell Core on your Ubuntu 16.04 system...."
-            echo .
             # Import the public repository GPG keys
             curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
             # Register the Microsoft Ubuntu repository
@@ -78,9 +72,7 @@ function installPSCore16 {
             # Update apt-get
             sudo apt-get update
             # Install PowerShell
-            echo .
             sudo apt-get install -y powershell && echo "The latest version of Powershell Core has been installed..."
-            echo .
             sleep 1
             echo $i
             i=$(expr $i + 1)
@@ -96,8 +88,6 @@ function installPSCore17 {
         i="0"
         while (true)
         do
-            echo "This script will install the latest version of PowerShell Core on your Ubuntu 17.04 system...."
-            echo .
             # Import the public repository GPG keys
             curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
             # Register the Microsoft Ubuntu repository
@@ -105,9 +95,7 @@ function installPSCore17 {
             # Update apt-get
             sudo apt-get update
             # Install PowerShell
-            echo .
             sudo apt-get install -y powershell && echo "The latest version of Powershell Core has been installed..."
-            echo .
             sleep 1
             echo $i
             i=$(expr $i + 1)
@@ -123,14 +111,10 @@ function installmacOS {
         i="0"
         while (true)
         do
-            echo "This script will first install brew if you do not already have it..."
-            echo .
             #brew install
             /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
             # caskroom install
             brew tap caskroom/cask
-            echo "This script will now install the latest version of PowerShell Core via brew..."
-            echo .
             # brew powershell core install
             brew cask install powershell && echo "The latest version of PowerShell Core has been installed."
             sleep 1
@@ -175,27 +159,16 @@ function installAzCli {
      i="0"
         while (true)
         do
-            #Install Azure CLI 2.0
-            #Address https://docs.microsoft.com/en-us/cli/azure/install-azure-cli
-            #Github https://github.com/Azure/azure-cli/releases
-
-            read -p "Would you also like to install Azure CLI? y/n" -n 1 -r
-            echo    # (optional) move to a new line
-            if [[ $REPLY =~ ^[Yy]$ ]]
+            echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ wheezy main" | \
+            sudo tee /etc/apt/sources.list.d/azure-cli.list
+            sudo apt-key adv --keyserver packages.microsoft.com --recv-keys 417A0893
+            sudo apt-get install apt-transport-https
+            sudo apt-get update && sudo apt-get install azure-cli
+            if [[ $? -eq 0 ]]
             then
-                echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ wheezy main" | \
-                sudo tee /etc/apt/sources.list.d/azure-cli.list
-                sudo apt-key adv --keyserver packages.microsoft.com --recv-keys 417A0893
-                sudo apt-get install apt-transport-https
-                sudo apt-get update && sudo apt-get install azure-cli
-                if [[ $? -eq 0 ]]
-                then
-                    echo "Successfully installed Azure CLI 2.0"
-                else
-                    echo "Azure CLI 2.0 not installed successfully" >&2
-            fi
-            else 
-                echo "You chose not to install Azure CLI 2.0... Exiting now."
+                echo "Successfully installed Azure CLI 2.0"
+            else
+                echo "Azure CLI 2.0 not installed successfully" >&2
             fi
             echo
             sleep 1
@@ -235,7 +208,7 @@ function do_main_menu ()
         exit 0
     elif [ $RET -eq 0 ]; then
         case "$SELECTION" in
-        a\ *) envSelection;;
+        a\ *) envSelection ;;
         b\ *) envSelectazrm ;;
         c\ *) envselctall ;;
         f\ *) about ;;
