@@ -30,7 +30,7 @@ function envSelection {
             exit
         ;;
     esac
-} end
+}
 function envSelectazrm {
     envSelection
     installAzureRM
