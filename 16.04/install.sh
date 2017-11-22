@@ -11,13 +11,13 @@ function envSelection {
     # Change to lower case and remove spaces.
     option=$(echo $choice | tr '[:upper:]' '[:lower:]' | sed 's/ //g')
     case "${option}" in
-        ubuntu14) installPSCore14
+        ubuntu14) installPSCore14 | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 14.04" 20 70 0
         ;;
-        ubuntu16) installPSCore16
+        ubuntu16) installPSCore16 | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 16.04" 20 70 0
         ;;
-        ubuntu17) installPSCore17
+        ubuntu17) installPSCore17 | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 14.04" 20 70 0
         ;;
-        macos) installmacOS
+        macos) installmacOS | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for macOS 10.12+" 20 70 0
         ;;
         *) whiptail --title "PowerShell Core Installer" --msgbox "You cancelled or have finished." 8 78
             status=1
@@ -99,14 +99,14 @@ function installmacOS {
     brew cask install powershell && echo "The latest version of PowerShell Core has been installed."
 }
 function envSelectazrm {
-    envSelection | whiptail --title "GAUGE" --gauge "Hi, this is a gauge widget" 20 70 0
-    installAzureRM | whiptail --title "GAUGE" --gauge "Hi, this is a gauge widget" 20 70 0
+    envSelection
+    installAzureRM | whiptail --title "Azure RM Modules Installer" --gauge "Installing Azure RM Modules" 20 70 0
     exit 0 && echo "Completed install!"
 }
 function envselctall {
     envSelection
-    installAzureRM
-    installAzCli
+    installAzureRM | whiptail --title "Azure RM Modules Installer" --gauge "Installing Azure RM Modules" 20 70 0
+    installAzCli | whiptail --title "Azure CLI 2.0 Installer" --gauge "Installing Azure CLI 2.0" 20 70 0
     exit 0 && echo "Completed install"
 }
 function installAzureRM {
@@ -163,33 +163,33 @@ function about {
 
 #------------------------------------------------------------------------------
 function do_main_menu ()
-{
-  SELECTION=$(whiptail --title "PowerShell Core Install Assist $ver" --menu "Arrow/Enter Selects or Tab Key" 20 70 10 --cancel-button Quit --ok-button Select \
-  "a " "PowerShell Core Install Only" \
-  "b " "PowerShell Core Install + AzureRM Modules" \
-  "c " "PowerShelL Core Install + AzureRM Modules and Azure CLI 2.0" \
-  "f " "About" \
-  "q " "Quit Menu Back to Console"  3>&1 1>&2 2>&3)
+    {
+    SELECTION=$(whiptail --title "PowerShell Core Install Assist $ver" --menu "Arrow/Enter Selects or Tab Key" 20 70 10 --cancel-button Quit --ok-button Select \
+    "a " "PowerShell Core Install Only" \
+    "b " "PowerShell Core Install + AzureRM Modules" \
+    "c " "PowerShell Core Install + AzureRM Modules and Azure CLI 2.0" \
+    "f " "About" \
+    "q " "Quit Menu Back to Console"  3>&1 1>&2 2>&3)
 
-  RET=$?
-  if [ $RET -eq 1 ]; then
-    exit 0
-  elif [ $RET -eq 0 ]; then
-    case "$SELECTION" in
-      a\ *) envSelection;;
-      b\ *) envSelectazrm ;;
-      c\ *) envselctall ;;
-      f\ *) about ;;
-      q\ *) echo "NOTE"
-            echo "After PowerShell Core Installation is Complete"
-            echo "      Reboot to Finalize Install"
-            echo "      Then test PowerShell Core by typing 'pwsh'"
-            echo ""
-            exit 0 ;;
-         *) whiptail --msgbox "Programmer error: unrecognized option" 20 60 1 ;;
-    esac || whiptail --msgbox "There was an error running selection $SELECTION" 20 60 1
-  fi
-}
+    RET=$?
+    if [ $RET -eq 1 ]; then
+        exit 0
+    elif [ $RET -eq 0 ]; then
+        case "$SELECTION" in
+        a\ *) envSelection;;
+        b\ *) envSelectazrm ;;
+        c\ *) envselctall ;;
+        f\ *) about ;;
+        q\ *) echo "NOTE"
+                echo "After PowerShell Core Installation is Complete"
+                echo "      Reboot to Finalize Install"
+                echo "      Then test PowerShell Core by typing 'pwsh'"
+                echo ""
+                exit 0 ;;
+            *) whiptail --msgbox "Programmer error: unrecognized option" 20 60 1 ;;
+        esac || whiptail --msgbox "There was an error running selection $SELECTION" 20 60 1
+    fi
+    }
 
 while true; do
    do_main_menu
