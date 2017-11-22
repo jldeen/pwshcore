@@ -2,36 +2,34 @@
 ver=1.0
 
 function envSelection {
-    while [ "$status" -eq 0 ]  
-        do
-            choice=$(whiptail --title "Environment Selection" --menu "Please choose your environment" 16 78 5 \
-            "ubuntu14" "14.04" \
-            "ubuntu16" "16.04" \
-            "ubuntu17" "17.04" \
-            "macOS" "10.12+" 3>&2 2>&1 1>&3) 
-            
-            # Change to lower case and remove spaces.
-            option=$(echo $choice | tr '[:upper:]' '[:lower:]' | sed 's/ //g')
-            case "${option}" in
-                ubuntu14) installPSCore14
-                ;;
-                ubuntu16) installPSCore16
-                ;;
-                ubuntu17) installPSCore17
-                ;;
-                macos) installmacOS
-                ;;
-                *) whiptail --title "PowerShell Core Installer" --msgbox "You cancelled or have finished." 8 78
-                    status=1
-                    exit
-                ;;
-            esac
-            exitstatus1=$status1
-        done
-    else
-        whiptail --title "PowerShell Core Installer" --msgbox "You chose not to proceed." 8 78
-        exit
-    fi
+    choice=$(whiptail --title "Environment Selection" --menu "Please choose your environment" 16 78 5 \
+    "ubuntu14" "14.04" \
+    "ubuntu16" "16.04" \
+    "ubuntu17" "17.04" \
+    "macOS" "10.12+" 3>&2 2>&1 1>&3) 
+    
+    # Change to lower case and remove spaces.
+    option=$(echo $choice | tr '[:upper:]' '[:lower:]' | sed 's/ //g')
+    case "${option}" in
+        ubuntu14) installPSCore14
+        ;;
+        ubuntu16) installPSCore16
+        ;;
+        ubuntu17) installPSCore17
+        ;;
+        macos) installmacOS
+        ;;
+        *) whiptail --title "PowerShell Core Installer" --msgbox "You cancelled or have finished." 8 78
+            status=1
+            exit
+        ;;
+    esac
+    exitstatus1=$status1
+done
+else
+whiptail --title "PowerShell Core Installer" --msgbox "You chose not to proceed." 8 78
+exit
+fi
 }
 
 function do_cv3_compile ()
