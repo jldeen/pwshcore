@@ -260,7 +260,7 @@ function installAzCli {
                 yum check-update
                 sudo yum install azure-cli
             fi
-        }
+        } | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure CLI 2.0 for RHEL" 6 60 0 
         rpmCliCheck
         # sudo -S - auth sudo in advance
         sudo -S <<< $psw ls > /dev/null 2>&1
