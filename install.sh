@@ -77,9 +77,8 @@ function installDebian8 {
             sleep 1
             echo $i
         done
-    } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 14.04" 6 60 0
+    } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Debian 8" 6 60 0
     end
-    exit 0
 } 
 function installDebian9 {
     {
@@ -103,9 +102,8 @@ function installDebian9 {
             sleep 1
             echo $i
         done
-    } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 14.04" 6 60 0
+    } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Debian 9" 6 60 0
     end
-    exit 0
 } 
 function installCentos7 {
     {
@@ -122,7 +120,6 @@ function installCentos7 {
         done
     } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for CentOS 7" 6 60 0
     end
-    exit 0
 }
 function installrhel7 {
     {
@@ -138,7 +135,6 @@ function installrhel7 {
         done
     } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for RHEL 7" 6 60 0
     end
-    exit 0
 } 
 function installPSCore14 {
     {
@@ -157,7 +153,6 @@ function installPSCore14 {
         done
     } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 14.04" 6 60 0
     end
-    exit 0
 } 
 function installPSCore16 {
     {
@@ -176,7 +171,6 @@ function installPSCore16 {
         done
     }   | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 16.04" 6 60 0
     end
-    exit 0
 } 
 function installPSCore17 {
    {
@@ -195,7 +189,6 @@ function installPSCore17 {
         done
     }   | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 17.04" 6 60 0
     end
-    exit 0
 } 
 function installAzureRM {
     {
