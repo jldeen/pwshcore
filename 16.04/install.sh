@@ -4,7 +4,7 @@
     DISTROS=$(whiptail --title "PowerShell Core Installer" --menu --radiolist \
     "What is your environment?" 15 60 4 \
     "Ubuntu" "14.04" OFF \
-    "Ubuntu" "16.04" OFF \
+    "Ubuntu" "16.04" ON \
     "Ubuntu" "17.04" OFF \
     "macOS" OFF 3>&1 1>&2 2>&3)
     
