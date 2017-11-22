@@ -85,6 +85,12 @@ function rpmCheck {
         sudo sh -c 'echo -e "[azure-cli]\nname=Azure CLI\nbaseurl=https://packages.microsoft.com/yumrepos/azure-cli\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/azure-cli.repo'
         yum check-update > /dev/null 2>&1
         sudo yum install azure-cli -y
+    sleep 1
+    for ((i=0; i<=100; i+=20)); do
+        sleep 1
+        echo $i
+    done
+    do_main_menu
     fi
     } | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure CLI 2.0 for RHEL" 6 60 0
 } 
