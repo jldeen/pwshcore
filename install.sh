@@ -149,9 +149,9 @@ function installPSCore14 {
         # sudo -S - auth sudo in advance
         sudo -S <<< $psw ls > /dev/null 2>&1
         # Import the public repository GPG keys
-        curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo -S <<< $psw apt-key add -
+        curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
         # Register the Microsoft Ubuntu repository
-        curl -s https://packages.microsoft.com/config/ubuntu/14.04/prod.list | sudo -S <<< $psw tee /etc/apt/sources.list.d/microsoft.list
+        curl -s https://packages.microsoft.com/config/ubuntu/14.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
         # Update apt-get
         sudo -s <<< $psw apt-get update
         # Install PowerShell
@@ -272,6 +272,7 @@ function do_main_menu ()
     "a " "PowerShell Core Install Only" \
     "b " "PowerShell Core Install + AzureRM Modules" \
     "c " "PowerShell Core Install + AzureRM Modules and Azure CLI 2.0" \
+    "d " ""
     "f " "About" \
     "q " "Quit Menu Back to Console"  3>&1 1>&2 2>&3)
 
