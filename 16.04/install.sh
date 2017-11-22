@@ -19,11 +19,11 @@ function envSelection {
     # Change to lower case and remove spaces.
     option=$(echo $choice | tr '[:upper:]' '[:lower:]' | sed 's/ //g')
     case "${option}" in
-        ubuntu14) installPSCore14
+        ubuntu14) installPSCore14 end
         ;;
-        ubuntu16) installPSCore16
+        ubuntu16) installPSCore16 end
         ;;
-        ubuntu17) installPSCore17
+        ubuntu17) installPSCore17 end
         ;;
         *) whiptail --title "PowerShell Core Installer" --msgbox "You cancelled or have finished." 8 78
             status=1
@@ -146,7 +146,7 @@ function about {
     " 35 70 35
 }
 function end {
-    whiptail --title "PowerShell Core Installation" --msgbox "PowerShell Core Installer has completed." 8 78
+    whiptail --title "PowerShell Core Installation" --msgbox "PowerShell Core Installer has completed successfully." 8 78
 }
 #------------------------------------------------------------------------------
 function do_main_menu ()
