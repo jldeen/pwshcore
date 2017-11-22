@@ -2,7 +2,7 @@
 # script version
 ver=1.0
 # password capture
-psw=$(whiptail --title "Sudo Password Capture" --passwordbox "Sudo is required to install PowerShell Core. Please enter your sudo password to proceed with the install." 10 60 3>&1 1>&2 2>&3)
+psw=$(whiptail --title "PowerShell Core Install | Sudo Password Capture" --passwordbox "Sudo is required to install PowerShell Core. Please enter your sudo password to proceed with the install." 10 60 3>&1 1>&2 2>&3)
 exitstatus=$?
     if [ $exitstatus = 0 ]; then
         whiptail --title "PowerShell Core Installation" --msgbox "Sudo password captured successfully!" 8 78
