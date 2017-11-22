@@ -166,12 +166,7 @@ function do_main_menu ()
         b\ *) envSelectazrm ;;
         c\ *) envselctall ;;
         f\ *) about ;;
-        q\ *) echo "NOTE"
-                echo "After PowerShell Core Installation is Complete"
-                echo "      Reboot to Finalize Install"
-                echo "      Then test PowerShell Core by typing 'pwsh'"
-                echo ""
-                exit 0 ;;
+        q\ *) exit 0 ;;
             *) whiptail --msgbox "Programmer error: unrecognized option" 20 60 1 ;;
         esac || whiptail --msgbox "There was an error running selection $SELECTION" 20 60 1
     fi
