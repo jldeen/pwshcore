@@ -88,7 +88,6 @@ function rpmAzInstall {
         sleep 1
         echo $i
     done
-    fi
     } | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure CLI 2.0 for RHEL" 6 60 0
 } 
 function installDebian8 {
