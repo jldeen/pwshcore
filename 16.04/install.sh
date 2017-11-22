@@ -1,7 +1,13 @@
 #!/bin/bash
 ver=1.0
-psw=$(whiptail --title "Sudo Password Capture" --passwordbox "Sudo required to install. Please enter your sudo password to proceed." 10 60 3>&1 1>&2 2>&3)
-
+psw=$(whiptail --title "Sudo Password Capture" --passwordbox "Sudo required to install PowerShell Core. Please enter your sudo password to proceed with the install." 10 60 3>&1 1>&2 2>&3)
+exitstatus=$?
+    if [ $exitstatus = 0 ]; then
+        do_main_menu
+    else
+        #Password if cancelled
+        whiptail --title "PowerShell Core Installation" --msgbox "Sudo password not captured, install Cancelled" 10 60
+    fi
 function envSelection {
     choice=$(whiptail --title "Environment Selection" --menu "Please choose your environment" 16 78 5 \
     "ubuntu14" "14.04" \
@@ -49,9 +55,8 @@ function installPSCore14 {
             sleep 1
             echo $i
         done
-} | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 14.04" 6 60 0
-
-
+    } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 14.04" 6 60 0
+} 
 #         echo 100
 #         # Give it some time to display the progress to the user.
 #         sleep 2
@@ -74,7 +79,6 @@ function installPSCore16 {
         done
     }   | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 16.04" 6 60 0
 } 
-
 function installPSCore17 {
    {
         i="0"
@@ -98,7 +102,6 @@ function installPSCore17 {
         sleep 2
     } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 17.04" 8 78 0
 }
-
 function installAzureRM {
     {
      i="0"
