@@ -63,9 +63,9 @@ function optInstall {
     # Change to lower case and remove spaces.
     option=$(echo $choice | tr '[:upper:]' '[:lower:]' | sed 's/ //g')
     case "${option}" in
-        azureRM) installAzureRM
+        azurerm) installAzureRM
         ;;
-        azureCli) installAzCli
+        azurecli) installAzCli
         ;;
         *) whiptail --title "PowerShell Core Installer" --msgbox "You have chosen to cancel this installation." 8 78
             status=1
