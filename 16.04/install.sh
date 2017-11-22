@@ -36,7 +36,7 @@ function envSelection {
         ;;
         rhel7) installrhel7
         ;;
-        *) whiptail --title "PowerShell Core Installer" --msgbox "You cancelled or have finished." 8 78
+        *) whiptail --title "PowerShell Core Installer" --msgbox "You have chosen to cancel this installation." 8 78
             status=1
             exit
         ;;
