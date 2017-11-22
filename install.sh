@@ -157,7 +157,7 @@ function installPSCore14 {
 function installPSCore16 {
     {
         # Import the public repository GPG keys
-        curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo -S <<< $psw apt-key add -
+        curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
         # Register the Microsoft Ubuntu repository
         curl -s https://packages.microsoft.com/config/ubuntu/16.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
         # Update apt-get
