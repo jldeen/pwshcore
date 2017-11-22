@@ -130,11 +130,11 @@ if [ $exitstatus = 0 ]; then
         # Change to lower case and remove spaces.
         option=$(echo $choice | tr '[:upper:]' '[:lower:]' | sed 's/ //g')
         case "${option}" in
-            ubuntu14) installPSCore14 | whiptail --title "PowerShell Core Install"
+            ubuntu14) installPSCore14
             ;;
-            ubuntu16) installPSCore16 | whiptail --title "PowerShell Core Install"
+            ubuntu16) installPSCore16
             ;;
-            ubuntu17) installPSCore17 | whiptail --title "PowerShell Core Install"
+            ubuntu17) installPSCore17
             ;;
             macos) installmacOS
             ;;
