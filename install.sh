@@ -75,6 +75,19 @@ function optInstall {
             ;;
         esac
 }
+function rpmCheck {
+    {
+    rpm -qa '*release*' > /dev/null 2>&1 
+    if [ $? -eq 0 ]; then
+        # sudo -S - auth sudo in advance
+        sudo -S <<< $psw ls > /dev/null 2>&1
+        sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+        sudo sh -c 'echo -e "[azure-cli]\nname=Azure CLI\nbaseurl=https://packages.microsoft.com/yumrepos/azure-cli\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/azure-cli.repo'
+        yum check-update
+        sudo yum install azure-cli
+    fi
+    } | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure CLI 2.0 for RHEL" 6 60 0
+}
 function installDebian8 {
     {
         # sudo -S - auth sudo in advance
@@ -249,21 +262,8 @@ function installAzureRM {
     } | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure RM Modules" 8 78 0
 } 
 function installAzCli {
-    {
-        function rpmCliCheck {
-            {
-            rpm -qa '*release*' > /dev/null 2>&1 
-            if [ $? -eq 0 ]; then
-                # sudo -S - auth sudo in advance
-                sudo -S <<< $psw ls > /dev/null 2>&1
-                sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
-                sudo sh -c 'echo -e "[azure-cli]\nname=Azure CLI\nbaseurl=https://packages.microsoft.com/yumrepos/azure-cli\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/azure-cli.repo'
-                yum check-update
-                sudo yum install azure-cli
-            fi
-            } | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure CLI 2.0 for RHEL" 6 60 0
-        }  
-        rpmCliCheck
+    {  
+        rpmCheck
         # sudo -S - auth sudo in advance
         sudo -S <<< $psw ls > /dev/null 2>&1
         echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ wheezy main" | \
