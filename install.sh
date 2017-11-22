@@ -18,7 +18,8 @@ function envSelection {
     "debian8" "Debian 8" \
     "debian9" "Debian 9" \
     "centos7" "CentOS 7" \
-    "rhel7" "RHEL 7" 3>&2 2>&1 1>&3) 
+    "rhel7" "RHEL 7" \
+    "back" "Back to main menu" 3>&2 2>&1 1>&3) 
     # Change to lower case and remove spaces.
     option=$(echo $choice | tr '[:upper:]' '[:lower:]' | sed 's/ //g')
     case "${option}" in
@@ -35,6 +36,8 @@ function envSelection {
         centos7) installCentos7
         ;;
         rhel7) installrhel7
+        ;;
+        back) do_main_menu
         ;;
         *) whiptail --title "PowerShell Core Installer" --msgbox "You have chosen to cancel this installation." 8 78
             status=1
@@ -56,22 +59,22 @@ function envselctall {
     exit 0
 }
 function optInstall {
-    choice=$(whiptail --title "Optional Features" --checklist "Please select which features you would like to install" 16 78 5 \
+    choice=$(whiptail --title "Optional Features" --checklist "Please select which features you would like to install" 20 78 15 \
     "azureRM" "AzureRM Modules" on \
     "azureCli" "Azure CLI 2.0" off 3>&2 2>&1 1>&3) 
-
-    # Change to lower case and remove spaces.
-    option=$(echo $choice | tr '[:upper:]' '[:lower:]' | sed 's/ //g')
-    case "${option}" in
-        azurerm) installAzureRM
-        ;;
-        azurecli) installAzCli
-        ;;
-        *) whiptail --title "PowerShell Core Installer" --msgbox "You have chosen to cancel this installation." 8 78
-            status=1
-            exit
-        ;;
-    esac
+    while read choice
+    do
+            case $choice in
+                azureRM) installAzureRM
+                ;;
+                azureCli) installAzCli
+                ;;
+                *) whiptail --title "PowerShell Core Installer" --msgbox "You have chosen to cancel this installation." 8 78
+                    status=1
+                    exit
+                ;;
+            esac
+    done
 }
 function installDebian8 {
     {
