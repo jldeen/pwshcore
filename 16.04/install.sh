@@ -5,10 +5,10 @@ ver=1.0
 psw=$(whiptail --title "Sudo Password Capture" --passwordbox "Sudo required to install PowerShell Core. Please enter your sudo password to proceed with the install." 10 60 3>&1 1>&2 2>&3)
 exitstatus=$?
     if [ $exitstatus = 0 ]; then
-        echo "Sudo password captured!"
+        whiptail --title "PowerShell Core Installation" --msgbox "Sudo password captured successfully!" 8 78
     else
         #Password if cancelled
-        whiptail --title "PowerShell Core Installation" --msgbox "Sudo password not captured, install Cancelled" 10 60
+        whiptail --title "PowerShell Core Installation" --msgbox "Sudo password not captured, install cancelled." 10 60
     fi
 function envSelection {
     choice=$(whiptail --title "Environment Selection" --menu "Please choose your environment" 16 78 5 \
@@ -34,13 +34,15 @@ function envSelection {
 function envSelectazrm {
     envSelection
     installAzureRM
-    exit 0 && echo "Completed install!"
+    end
+    exit 0
 }
 function envselctall {
     envSelection
     installAzureRM
     installAzCli
-    exit 0 && echo "Completed install"
+    end
+    exit 0
 }
 function installPSCore14 {
     {
@@ -59,11 +61,6 @@ function installPSCore14 {
         done
     } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 14.04" 6 60 0
 } 
-#         echo 100
-#         # Give it some time to display the progress to the user.
-#         sleep 2
-#     } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 14.04" 8 78 0
-# }
 function installPSCore16 {
     {
         # Import the public repository GPG keys
@@ -147,6 +144,9 @@ function about {
     before progressing to next step. 
     For Additional Details See https://github.com/jldeen/pwshcore
     " 35 70 35
+}
+function end {
+    whiptail --title "PowerShell Core Installation" --msgbox "PowerShell Core Installer has completed." 8 78
 }
 #------------------------------------------------------------------------------
 function do_main_menu ()
