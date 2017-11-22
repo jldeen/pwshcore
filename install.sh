@@ -59,7 +59,7 @@ function envselctall {
     exit 0
 }
 function optInstall {
-    choice=$(whiptail --title "Optional Features" --menu "Please select which features you would like to install" 20 78 15 \
+    choice=$(whiptail --title "Optional Features" --menu "Please choose which components you would like to install" 16 78 5 20 78 15 \
     "azureRM" "AzureRM Modules" \
     "azureCli" "Azure CLI 2.0" 3>&2 2>&1 1>&3) 
         case $choice in
@@ -210,7 +210,7 @@ function installPSCore17 {
        # sudo -S - auth sudo in advance
         sudo -S <<< $psw ls > /dev/null 2>&1
         # Import the public repository GPG keys
-        curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+        curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add - > /dev/null 2>&1
         # Register the Microsoft Ubuntu repository
         curl -s https://packages.microsoft.com/config/ubuntu/17.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
         # Update apt-get
