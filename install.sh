@@ -76,6 +76,7 @@ function optInstall {
         esac
 }
 function rpmCheck {
+    {
     rpm -qa '*release*' > /dev/null 2>&1 
     if [ $? -eq 0 ]; then
         # sudo -S - auth sudo in advance
@@ -85,7 +86,8 @@ function rpmCheck {
         yum check-update > /dev/null 2>&1
         sudo yum install azure-cli -y
     fi
-} | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure CLI 2.0 for RHEL" 6 60 0
+    } | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure CLI 2.0 for RHEL" 6 60 0
+} 
 function installDebian8 {
     {
         # sudo -S - auth sudo in advance
