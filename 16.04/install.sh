@@ -99,13 +99,15 @@ function installmacOS {
     brew cask install powershell && echo "The latest version of PowerShell Core has been installed."
 }
 function envSelectazrm {
-    envSelection 
-    installAzureRM
+    envSelection | whiptail --title "GAUGE" --gauge "Hi, this is a gauge widget" 20 70 0
+    installAzureRM | whiptail --title "GAUGE" --gauge "Hi, this is a gauge widget" 20 70 0
+    exit 0 && echo "Completed install!"
 }
 function envselctall {
     envSelection
     installAzureRM
     installAzCli
+    exit 0 && echo "Completed install"
 }
 function installAzureRM {
     echo "This script will now install the AzureRM Modules..."
