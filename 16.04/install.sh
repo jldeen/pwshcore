@@ -1,5 +1,6 @@
 #!/bin/bash
 ver=1.0
+psw=$(whiptail --title "Sudo Password Capture" --passwordbox "Sudo required to install. Please enter your sudo password to proceed." 10 60 3>&1 1>&2 2>&3)
 
 function envSelection {
     choice=$(whiptail --title "Environment Selection" --menu "Please choose your environment" 16 78 5 \
@@ -11,13 +12,13 @@ function envSelection {
     # Change to lower case and remove spaces.
     option=$(echo $choice | tr '[:upper:]' '[:lower:]' | sed 's/ //g')
     case "${option}" in
-        ubuntu14) installPSCore14
+        ubuntu14) sudo -S <<< $psw installPSCore14
         ;;
-        ubuntu16) installPSCore16
+        ubuntu16) sudo -S <<< $psw installPSCore16
         ;;
-        ubuntu17) installPSCore17
+        ubuntu17) sudo -S <<< $psw installPSCore17
         ;;
-        macos) installmacOS
+        macos) sudo -S <<< $psw installmacOS
         ;;
         *) whiptail --title "PowerShell Core Installer" --msgbox "You cancelled or have finished." 8 78
             status=1
