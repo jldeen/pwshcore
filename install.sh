@@ -57,6 +57,8 @@ function envselctall {
 }
 function installDebian8 {
     {
+        # sudo -S - auth sudo in advance
+        sudo -S <<< $psw ls > /dev/null 2>&1
         # Install system components
         sudo -s <<< $psw apt-get update
         sudo -s <<< $psw apt-get install curl apt-transport-https
@@ -65,7 +67,7 @@ function installDebian8 {
         curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
 
         # Register the Microsoft Product feed
-        sudo -s <<< $psw sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-debian-jessie-prod jessie main" > /etc/apt/sources.list.d/microsoft.list'
+        sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-debian-jessie-prod jessie main" > /etc/apt/sources.list.d/microsoft.list'
 
         # Update the list of products
         sudo -s <<< $psw apt-get update
@@ -82,6 +84,8 @@ function installDebian8 {
 } 
 function installDebian9 {
     {
+        # sudo -S - auth sudo in advance
+        sudo -S <<< $psw ls > /dev/null 2>&1
         # Install system components
         sudo -s <<< $psw apt-get update
         sudo -s <<< $psw apt-get install curl gnupg apt-transport-https
@@ -90,7 +94,7 @@ function installDebian9 {
         curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
 
         # Register the Microsoft Product feed
-        sudo -s <<< $psw sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-debian-stretch-prod stretch main" > /etc/apt/sources.list.d/microsoft.list'
+        sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-debian-stretch-prod stretch main" > /etc/apt/sources.list.d/microsoft.list'
 
         # Update the list of products
         sudo -s <<< $psw apt-get update
@@ -107,9 +111,11 @@ function installDebian9 {
 } 
 function installCentos7 {
     {
+        # sudo -S - auth sudo in advance
+        sudo -S <<< $psw ls > /dev/null 2>&1
         # Import the public repository GPG keys
         # Register the Microsoft RedHat repository
-        curl -s https://packages.microsoft.com/config/rhel/7/prod.repo | sudo -S <<< $psw tee /etc/yum.repos.d/microsoft.repo
+        curl -s https://packages.microsoft.com/config/rhel/7/prod.repo | sudo tee /etc/yum.repos.d/microsoft.repo
 
         # Install PowerShell
         sudo -s <<< $psw yum install -y powershell
@@ -123,11 +129,13 @@ function installCentos7 {
 }
 function installrhel7 {
     {
+        # sudo -S - auth sudo in advance
+        sudo -S <<< $psw ls > /dev/null 2>&1
         # Register the Microsoft RedHat repository
-        curl -s shttps://packages.microsoft.com/config/rhel/7/prod.repo | sudo -S <<< $psw tee /etc/yum.repos.d/microsoft.repo
+        curl -s shttps://packages.microsoft.com/config/rhel/7/prod.repo | sudo tee /etc/yum.repos.d/microsoft.repo
 
         # Install PowerShell
-        sudo -s <<< $psw yum install -y powershell
+        sudo -S <<< $psw yum install -y powershell
         sleep 1
         for ((i=0; i<=100; i+=20)); do
             sleep 1
@@ -138,6 +146,8 @@ function installrhel7 {
 } 
 function installPSCore14 {
     {
+        # sudo -S - auth sudo in advance
+        sudo -S <<< $psw ls > /dev/null 2>&1
         # Import the public repository GPG keys
         curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo -S <<< $psw apt-key add -
         # Register the Microsoft Ubuntu repository
@@ -156,7 +166,7 @@ function installPSCore14 {
 } 
 function installPSCore16 {
     {
-        # sudo -S
+        # sudo -S - auth sudo in advance
         sudo -S <<< $psw ls > /dev/null 2>&1
         # Import the public repository GPG keys
         curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
@@ -177,10 +187,12 @@ function installPSCore16 {
 } 
 function installPSCore17 {
    {
+       # sudo -S - auth sudo in advance
+        sudo -S <<< $psw ls > /dev/null 2>&1
         # Import the public repository GPG keys
-        curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo -S <<< $psw apt-key add -
+        curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
         # Register the Microsoft Ubuntu repository
-        curl -s https://packages.microsoft.com/config/ubuntu/17.04/prod.list | sudo -S <<< $psw tee /etc/apt/sources.list.d/microsoft.list
+        curl -s https://packages.microsoft.com/config/ubuntu/17.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
         # Update apt-get
         sudo -s <<< $psw apt-get update
         # Install PowerShell
@@ -215,11 +227,13 @@ function installAzureRM {
 } 
 function installAzCli {
     {
+        # sudo -S - auth sudo in advance
+        sudo -S <<< $psw ls > /dev/null 2>&1
         echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ wheezy main" | \
-        sudo -S <<< $psw tee /etc/apt/sources.list.d/azure-cli.list
-        sudo -S <<< $psw apt-key adv --keyserver packages.microsoft.com --recv-keys 417A0893 > /dev/null 2>&1
-        sudo -S <<< $psw apt-get install apt-transport-https
-        sudo -S <<< $psw apt-get update && sudo apt-get install azure-cli
+        sudo /etc/apt/sources.list.d/azure-cli.list
+        sudo apt-key adv --keyserver packages.microsoft.com --recv-keys 417A0893 > /dev/null 2>&1
+        sudo apt-get install apt-transport-https
+        sudo apt-get update && sudo apt-get install azure-cli
         if [[ $? -eq 0 ]]
         then
             echo "Successfully installed Azure CLI 2.0"
