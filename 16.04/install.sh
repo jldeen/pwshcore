@@ -77,6 +77,7 @@ function installPSCore16 {
             echo $i
         done
     }   | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 16.04" 6 60 0
+    end
 } 
 function installPSCore17 {
    {
@@ -94,6 +95,7 @@ function installPSCore17 {
             echo $i
         done
     }   | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 17.04" 6 60 0
+    end
 } 
 function installAzureRM {
     {
@@ -138,7 +140,7 @@ function installAzCli {
 function about {
   whiptail --title "About" --msgbox " \
                 PowerShell Core Install Menu Assist
-                  written by Jessica Deen
+                  Written by Jessica Deen
     This menu will help install the latest version of PowerShell 
     Core and optional components if desired.
     For Additional Details See https://github.com/jldeen/pwshcore
@@ -171,7 +173,6 @@ function do_main_menu ()
         esac || whiptail --msgbox "There was an error running selection $SELECTION" 20 60 1
     fi
     }
-
 while true; do
    do_main_menu
 done
