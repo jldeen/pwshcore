@@ -154,8 +154,7 @@ function installrhel7 {
         # Repodata 
         sudo yum makecache fast > /dev/null 2>&1
         # Register the Microsoft RedHat repository
-        curl -s shttps://packages.microsoft.com/config/rhel/7/prod.repo | sudo tee /etc/yum.repos.d/microsoft.repo
-
+        curl -s https://packages.microsoft.com/config/rhel/7/prod.repo | sudo tee /etc/yum.repos.d/microsoft.repo
         # Install PowerShell
         sudo yum install -y powershell
         sleep 1
@@ -261,7 +260,6 @@ function installAzCli {
                 yum check-update
                 sudo yum install azure-cli
             fi
-
         }
         rpmCliCheck
         # sudo -S - auth sudo in advance
