@@ -60,6 +60,8 @@ function installPSCore14 {
             echo $i
         done
     } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 14.04" 6 60 0
+    end
+    exit 0
 } 
 function installPSCore16 {
     {
@@ -78,6 +80,7 @@ function installPSCore16 {
         done
     }   | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 16.04" 6 60 0
     end
+    exit 0
 } 
 function installPSCore17 {
    {
@@ -96,6 +99,7 @@ function installPSCore17 {
         done
     }   | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 17.04" 6 60 0
     end
+    exit 0
 } 
 function installAzureRM {
     {
