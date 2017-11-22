@@ -6,8 +6,7 @@ function envSelection {
     choice=$(whiptail --title "Environment Selection" --menu "Please choose your environment" 16 78 5 \
     "ubuntu14" "14.04" \
     "ubuntu16" "16.04" \
-    "ubuntu17" "17.04" \
-    "macOS" "10.12+" 3>&2 2>&1 1>&3) 
+    "ubuntu17" "17.04" 3>&2 2>&1 1>&3) 
     
     # Change to lower case and remove spaces.
     option=$(echo $choice | tr '[:upper:]' '[:lower:]' | sed 's/ //g')
@@ -18,8 +17,6 @@ function envSelection {
         ;;
         ubuntu17) sudo -S <<< $psw installPSCore17
         ;;
-        macos) sudo -S <<< $psw installmacOS
-        ;;
         *) whiptail --title "PowerShell Core Installer" --msgbox "You cancelled or have finished." 8 78
             status=1
             exit
@@ -28,13 +25,13 @@ function envSelection {
 }
 function envSelectazrm {
     envSelection
-    installAzureRM
+    sudo -s <<< $psw installAzureRM
     exit 0 && echo "Completed install!"
 }
 function envselctall {
     envSelection
-    installAzureRM
-    installAzCli
+    sudo -s <<< $psw installAzureRM
+    sudo -s <<< $psw installAzCli
     exit 0 && echo "Completed install"
 }
 function installPSCore14 {
@@ -101,27 +98,7 @@ function installPSCore17 {
         sleep 2
     } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 17.04" 8 78 0
 }
-function installmacOS {
-    {
-        i="0"
-        while (true)
-        do
-            #brew install
-            /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-            # caskroom install
-            brew tap caskroom/cask
-            # brew powershell core install
-            brew cask install powershell && echo "The latest version of PowerShell Core has been installed."
-            sleep 1
-            echo $i
-            i=$(expr $i + 1)
-        done
-        # If it is done then display 100%
-        echo 100
-        # Give it some time to display the progress to the user.
-        sleep 2
-    } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for macOS 10.12+" 8 78 0
-} 
+
 function installAzureRM {
     {
      i="0"
@@ -187,7 +164,6 @@ function about {
     " 35 70 35
 
 }
-
 #------------------------------------------------------------------------------
 function do_main_menu ()
     {
