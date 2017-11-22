@@ -11,22 +11,26 @@ if [ $exitstatus = 0 ]; then
         "ubuntu14" "14.04" OFF\
         "ubuntu16" "16.04" ON \
         "ubuntu17" "17.04" OFF \
-        "macOS" "macOS" OFF 3>&2 2>&1 1>&3) 
+        "macOS" "macOS 10.12+" OFF 3>&2 2>&1 1>&3) 
          
         # Change to lower case and remove spaces.
         option=$(echo $choice | tr '[:upper:]' '[:lower:]' | sed 's/ //g')
         case "${option}" in
             ubuntu14) 
-                whiptail --title "Ubuntu 14.40 PowerShelL Core Install" --msgbox "In first option" 8 78
+                whiptail --title "Ubuntu 14.40 PowerShell Core Install" --msgbox "In first option" 8 78
+            installPSCore14
             ;;
             ubuntu16)
-                whiptail --title "Ubuntu 16.40 PowerShelL Core Install" --msgbox "In second option" 8 78
+                whiptail --title "Ubuntu 16.40 PowerShell Core Install" --msgbox "In second option" 8 78
+            installPSCore16
             ;;
             ubuntu17)
-                whiptail --title "Ubuntu 17.40 PowerShelL Core Install" --msgbox "In second option" 8 78
+                whiptail --title "Ubuntu 17.40 PowerShell Core Install" --msgbox "In second option" 8 78
+            installPSCore17
             ;;
             macos)
-                whiptail --title "macOS PowerShelL Core Install" --msgbox "In second option" 8 78
+                whiptail --title "macOS PowerShell Core Install" --msgbox "In second option" 8 78
+            installmacOS
             ;;
             *) whiptail --title "PowerShell Core Installer" --msgbox "You cancelled or have finished." 8 78
                 status=1
@@ -97,6 +101,22 @@ function installPSCore17 {
     echo .
 
 }
+function installmacOS {
+    echo "This script will first install brew if you do not already have it..."
+    echo .
+
+    #brew install
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+    # caskroom install
+    brew tap caskroom/cask
+
+    echo "This script will now install the latest version of PowerShell Core via brew..."
+    echo .
+
+    # brew powershell core install
+    brew cask install powershell && echo "The latest version of PowerShell Core has been installed."
+}
 function installAzureRM {
     echo "This script will now install the AzureRM Modules..."
     echo .
@@ -113,7 +133,6 @@ function installAzureRM {
             echo "PowerShell Core with AzureRM NetCore Module did not install successfully." >&2
     fi
 }
-
 function installAzCli {
     #Install Azure CLI 2.0
     #Address https://docs.microsoft.com/en-us/cli/azure/install-azure-cli
