@@ -39,50 +39,45 @@ function envselctall {
 }
 function installPSCore14 {
     {
-        i="0"
-        while (true)
-        do
-            # Import the public repository GPG keys
-            curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-            # Register the Microsoft Ubuntu repository
-            curl https://packages.microsoft.com/config/ubuntu/14.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
-            # Update apt-get
-            sudo apt-get update
-            # Install PowerShell
-            sudo apt-get install -y powershell && echo "The latest version of Powershell Core has been installed..."
+        # Import the public repository GPG keys
+        curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+        # Register the Microsoft Ubuntu repository
+        curl https://packages.microsoft.com/config/ubuntu/14.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
+        # Update apt-get
+        sudo apt-get update
+        # Install PowerShell
+        sudo apt-get install -y powershell && echo "The latest version of Powershell Core has been installed..."
+        sleep 1
+        for ((i=0; i<=100; i+=20)); do
             sleep 1
             echo $i
-            i=$(expr $i + 1)
         done
-        # If it is done then display 100%
-        echo 100
-        # Give it some time to display the progress to the user.
-        sleep 2
-    } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 14.04" 8 78 0
-}
+} | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 14.04" 6 60 0
+
+
+#         echo 100
+#         # Give it some time to display the progress to the user.
+#         sleep 2
+#     } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 14.04" 8 78 0
+# }
 function installPSCore16 {
     {
-     i="0"
-        while (true)
-        do
-            # Import the public repository GPG keys
-            curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-            # Register the Microsoft Ubuntu repository
-            curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
-            # Update apt-get
-            sudo apt-get update
-            # Install PowerShell
-            sudo apt-get install -y powershell && echo "The latest version of Powershell Core has been installed..."
+        # Import the public repository GPG keys
+        curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+        # Register the Microsoft Ubuntu repository
+        curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
+        # Update apt-get
+        sudo apt-get update
+        # Install PowerShell
+        sudo apt-get install -y powershell && echo "The latest version of Powershell Core has been installed..."
+        sleep 1
+        for ((i=0; i<=100; i+=20)); do
             sleep 1
             echo $i
-            i=$(expr $i + 1)
         done
-        # If it is done then display 100%
-        echo 100
-        # Give it some time to display the progress to the user.
-        sleep 2
-    } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 16.04" 8 78 0
+    }   | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 16.04" 6 60 0
 } 
+
 function installPSCore17 {
    {
         i="0"
