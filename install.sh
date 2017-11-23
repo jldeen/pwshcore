@@ -105,7 +105,7 @@ function installDebian9 {
         sudo -S <<< $psw ls > /dev/null 2>&1
         # Install system components
         sudo -S <<< $psw apt-get update
-        sudo -S <<< $psw apt-get install gnupg apt-transport-https -y
+        sudo -S <<< $psw apt-get install gnupg apt-transport-https dirmngr -y
         # Import the public repository GPG keys
         curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add - > /dev/null 2>&1
         # Register the Microsoft Product feed
