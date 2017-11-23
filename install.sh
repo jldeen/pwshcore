@@ -107,7 +107,7 @@ function installDebian9 {
         sudo -S <<< $psw apt-get update
         sudo -S <<< $psw apt-get install gnupg apt-transport-https -y
         # Import the public repository GPG keys
-        curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+        curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add - > /dev/null 2>&1
         # Register the Microsoft Product feed
         sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-debian-stretch-prod stretch main" > /etc/apt/sources.list.d/microsoft.list'
         # Update the list of products
