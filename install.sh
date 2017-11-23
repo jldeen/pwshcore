@@ -54,18 +54,19 @@ function envSelectazrm {
 function envselctall {
     envSelection
     installAzureRM
-    installAzCli
+    azCliCheck
     end
     exit 0
 }
 function optInstall {
     choice=$(whiptail --title "Optional Features" --menu "Please choose which components you would like to install" 16 78 5 \
     "azureRM" "AzureRM Modules" \
-    "azureCli" "Azure CLI 2.0" 3>&2 2>&1 1>&3) 
+    "azureCli" "Azure CLI 2.0" \
+    "back" "" 3>&2 2>&1 1>&3) 
         case $choice in
             azureRM) installAzureRM
             ;;
-            azureCli) installAzCli
+            azureCli) azCliCheck
             ;;
             back) do_main_menu
             ;;
@@ -247,7 +248,7 @@ function installAzureRM {
         echo $i
         done
     } | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure RM Modules" 8 78 0
-} 
+}
 function rpmAzInstall {
     {
         # sudo -S - auth sudo in advance
@@ -261,14 +262,10 @@ function rpmAzInstall {
             sleep 1
             echo $i
         done
-        }
-} 
+        } | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure CLI 2.0 for RHEL" 6 60 0
+}
 function installAzCli {
     {  
-        rpm -qa '*release*' > /dev/null 2>&1 
-        if [ $? -eq 0 ]; then
-        rpmAzInstall | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure CLI 2.0 for RHEL" 6 60 0
-        fi
         # sudo -S - auth sudo in advance
         sudo -S <<< $psw ls > /dev/null 2>&1
         echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ wheezy main" | \
@@ -288,7 +285,15 @@ function installAzCli {
             echo $i
         done
     }   | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure CLI 2.0" 6 60 0  
-}         
+}
+function azCliCheck {
+    rpm -qa '*release*' > /dev/null 2>&1 
+    if [ $? -eq 0 ]; then
+    rpmAzInstall
+    else 
+    installAzCli
+    fi
+}          
 function about {
   whiptail --title "About" --msgbox " \
                 PowerShell Core Install Menu Assist
