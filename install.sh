@@ -126,10 +126,8 @@ function installCentos7 {
     {
         # sudo -S - auth sudo in advance
         sudo -S <<< $psw ls > /dev/null 2>&1
-        # Import the public repository GPG keys
         # Register the Microsoft RedHat repository
-        curl -s https://packages.microsoft.com/config/rhel/7/prod.repo | sudo tee /etc/yum.repos.d/microsoft.repo
-
+        curl -s https://packages.microsoft.com/config/rhel/7/prod.repo | sudo tee /etc/yum.repos.d/microsoft.repo > /dev/null 2>&1
         # Install PowerShell
         sudo yum install -y powershell
         sleep 1
