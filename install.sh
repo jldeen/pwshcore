@@ -82,17 +82,13 @@ function installDebian8 {
         sudo -S <<< $psw ls > /dev/null 2>&1
         # Install system components
         sudo apt-get update
-        sudo apt-get install curl apt-transport-https
-
+        sudo apt-get install apt-transport-https -y
         # Import the public repository GPG keys
         curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-
         # Register the Microsoft Product feed
         sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-debian-jessie-prod jessie main" > /etc/apt/sources.list.d/microsoft.list'
-
         # Update the list of products
         sudo apt-get update
-
         # Install PowerShell
         sudo apt-get install -y powershell
         sleep 1
@@ -100,7 +96,7 @@ function installDebian8 {
             sleep 1
             echo $i
         done
-    } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 14.04" 6 60 0
+    } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Debian 8" 6 60 0
     end
 } 
 function installDebian9 {
@@ -109,17 +105,13 @@ function installDebian9 {
         sudo -S <<< $psw ls > /dev/null 2>&1
         # Install system components
         sudo apt-get update
-        sudo apt-get install curl gnupg apt-transport-https
-
+        sudo apt-get install gnupg apt-transport-https -y
         # Import the public repository GPG keys
         curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-
         # Register the Microsoft Product feed
         sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-debian-stretch-prod stretch main" > /etc/apt/sources.list.d/microsoft.list'
-
         # Update the list of products
         sudo apt-get update
-
         # Install PowerShell
         sudo apt-get install -y powershell
         sleep 1
@@ -127,7 +119,7 @@ function installDebian9 {
             sleep 1
             echo $i
         done
-    } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 14.04" 6 60 0
+    } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Debian 9" 6 60 0
     end
 } 
 function installCentos7 {
