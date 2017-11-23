@@ -252,7 +252,7 @@ function rpmAzInstall {
             sleep 1
             echo $i
         done
-        } | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure CLI 2.0 for RHEL" 6 60 0
+        } | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure CLI 2.0 for RPM" 6 60 0
 }
 function installAzCli {
     {  
