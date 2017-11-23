@@ -212,7 +212,7 @@ function installPSCore17 {
        # sudo -S - auth sudo in advance
         sudo -S <<< $psw ls > /dev/null 2>&1
         # Import the public repository GPG keys
-        curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+        curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -> /dev/null 2>&1
         # Register the Microsoft Ubuntu repository
         curl -s https://packages.microsoft.com/config/ubuntu/17.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
         # Update apt-get
