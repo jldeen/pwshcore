@@ -178,18 +178,17 @@ function installPSCore14 {
 } 
 function installPSCore16 {
     {
-        # sudo -S - auth sudo in advance
-        sudo -S <<< $psw ls > /dev/null 2>&1
-        # Import the public repository GPG keys
-        curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-        # Register the Microsoft Ubuntu repository
-        curl -s https://packages.microsoft.com/config/ubuntu/16.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
-        # Update apt-get
-        sudo apt-get update
-        # Install PowerShell
-        sudo apt-get install -y powershell
-        sleep 1
         for ((i=0; i<=100; i+=20)); do
+            # sudo -S - auth sudo in advance
+            sudo -S <<< $psw ls > /dev/null 2>&1
+            # Import the public repository GPG keys
+            curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+            # Register the Microsoft Ubuntu repository
+            curl -s https://packages.microsoft.com/config/ubuntu/16.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
+            # Update apt-get
+            sudo apt-get update
+            # Install PowerShell
+            sudo apt-get install -y powershell
             sleep 1
             echo $i
         done
