@@ -1,7 +1,16 @@
 #!/bin/bash
 # script version
 ver=1.0
-# password capture
+# sudo check
+sudo=$(whoami | grep root)
+if [ $exitstatus = 0 ]; then
+        whiptail --title "PowerShell Core Installation" --msgbox "Sudo password not required. Install being run as root." 10 60
+    else
+        whiptail --title "PowerShell Core Installation" --msgbox "Sudo password required!" 8 78
+        passwd
+    fi
+function passwd {
+    # password capture
 psw=$(whiptail --title "PowerShell Core Install | Sudo Password Capture" --passwordbox "Sudo is required to install PowerShell Core. Please enter your sudo password to proceed with the install." 10 60 3>&1 1>&2 2>&3)
 exitstatus=$?
     if [ $exitstatus = 0 ]; then
@@ -10,6 +19,7 @@ exitstatus=$?
         #Password if cancelled
         whiptail --title "PowerShell Core Installation" --msgbox "Sudo password not captured, install cancelled." 10 60
     fi
+}
 function envSelection {
     choice=$(whiptail --title "Environment Selection" --menu "Please choose your environment" 16 78 5 \
     "ubuntu14" "14.04" \
@@ -189,7 +199,6 @@ function installPSCore16 {
         done
     }   | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Ubuntu 16.04" 6 60 0
     end
-    endCheck
 } 
 function installPSCore17 {
    {
@@ -276,19 +285,14 @@ function azCliCheck {
 function about {
   whiptail --title "About" --msgbox " \
                 PowerShell Core Install Menu Assist
-                  Written by Jessica Deen
+                      Written by Jessica Deen
     This menu will help install the latest version of PowerShell 
     Core and optional components if desired.
-    For Additional Details See https://github.com/jldeen/pwshcore
+    For additional details see: https://github.com/jldeen/pwshcore
     " 35 70 35
 }
 function end {
     whiptail --title "PowerShell Core Installation" --msgbox "PowerShell Core Installer has completed successfully." 8 78
-}
-function endCheck {
-    if [[ "$SELECTION" = "a" ]]; then
-        exit 0
-    fi
 }
 #------------------------------------------------------------------------------
 function do_main_menu ()
