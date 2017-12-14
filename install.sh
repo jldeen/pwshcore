@@ -1,15 +1,6 @@
 #!/bin/bash
 # script version
 ver=1.0
-# sudo check
-sudo=$(whoami | grep root)
-exitstatus=$?
-if [ $exitstatus = 0 ]; then
-        whiptail --title "PowerShell Core Installation" --msgbox "Sudo password not required. Install being run as root." 10 60
-    else
-        whiptail --title "PowerShell Core Installation" --msgbox "Sudo password required!" 8 78
-        capturePass
-fi
 # passwd capture function
 function capturePass {
     # password capture
@@ -22,6 +13,15 @@ function capturePass {
             whiptail --title "PowerShell Core Installation" --msgbox "Sudo password not captured, install cancelled." 10 60
         fi
 }
+# sudo check
+sudo=$(whoami | grep root)
+exitstatus=$?
+if [ $exitstatus = 0 ]; then
+        whiptail --title "PowerShell Core Installation" --msgbox "Sudo password not required. Install being run as root." 10 60
+    else
+        whiptail --title "PowerShell Core Installation" --msgbox "Sudo password required!" 8 78
+        capturePass
+fi
 function envSelection {
     choice=$(whiptail --title "Environment Selection" --menu "Please choose your environment" 16 78 5 \
     "ubuntu14" "14.04" \
