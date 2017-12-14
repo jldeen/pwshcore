@@ -1,6 +1,18 @@
 #!/bin/bash
 # script version
 ver=1.0
+# passwd capture function
+function psswd {
+    # password capture
+    psw=$(whiptail --title "PowerShell Core Install | Sudo Password Capture" --passwordbox "Sudo is required to install PowerShell Core. Please enter your sudo password to proceed with the install." 10 60 3>&1 1>&2 2>&3)
+    exitstatus=$?
+        if [ $exitstatus = 0 ]; then
+            whiptail --title "PowerShell Core Installation" --msgbox "Sudo password captured successfully!" 8 78
+        else
+            #Password if cancelled
+            whiptail --title "PowerShell Core Installation" --msgbox "Sudo password not captured, install cancelled." 10 60
+        fi
+}
 # sudo check
 sudo=$(whoami | grep root)
 exitstatus=$?
@@ -10,17 +22,6 @@ if [ $exitstatus = 0 ]; then
         whiptail --title "PowerShell Core Installation" --msgbox "Sudo password required!" 8 78
         psswd
 fi
-function psswd {
-    # password capture
-    whiptail --title "PowerShell Core Install | Sudo Password Capture" --passwordbox "Sudo is required to install PowerShell Core. Please enter your sudo password to proceed with the install." 10 60 3>&1 1>&2 2>&3
-    exitstatus=$?
-        if [ $exitstatus = 0 ]; then
-            whiptail --title "PowerShell Core Installation" --msgbox "Sudo password captured successfully!" 8 78
-        else
-            #Password if cancelled
-            whiptail --title "PowerShell Core Installation" --msgbox "Sudo password not captured, install cancelled." 10 60
-        fi
-}
 function envSelection {
     choice=$(whiptail --title "Environment Selection" --menu "Please choose your environment" 16 78 5 \
     "ubuntu14" "14.04" \
