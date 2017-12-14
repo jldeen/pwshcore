@@ -7,9 +7,9 @@ if [ $exitstatus = 0 ]; then
         whiptail --title "PowerShell Core Installation" --msgbox "Sudo password not required. Install being run as root." 10 60
     else
         whiptail --title "PowerShell Core Installation" --msgbox "Sudo password required!" 8 78
-        passwd
+        psswd
     fi
-function passwd {
+function psswd {
     # password capture
 psw=$(whiptail --title "PowerShell Core Install | Sudo Password Capture" --passwordbox "Sudo is required to install PowerShell Core. Please enter your sudo password to proceed with the install." 10 60 3>&1 1>&2 2>&3)
 exitstatus=$?
