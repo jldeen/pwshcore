@@ -11,7 +11,7 @@ echo .
     # Update the list of products
     sudo zypper update
     # Install PowerShell
-    sudo zypper install powershell - y && echo "The latest version of Powershell Core has been installed..."
+    sudo zypper install powershell -y && echo "The latest version of Powershell Core has been installed..."
 
 #Azure RM NetCore Preview Module Install
     echo .
