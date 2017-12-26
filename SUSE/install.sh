@@ -1,6 +1,7 @@
 #!/bin/bash
 echo "This script will install the latest version of PowerShell Core on your OpenSUSE system...."
-echo .
+echo
+echo
 # PowerShell Install
     # sudo -S - auth sudo in advance
     sudo -S <<< $psw ls > /dev/null 2>&1
@@ -9,14 +10,20 @@ echo .
     # Add the Microsoft Product feed
     curl https://packages.microsoft.com/config/rhel/7/prod.repo | sudo tee /etc/zypp/repos.d/microsoft.repo
     # Update the list of products
-    sudo zypper -n update
+    sudo zypper update
     # Install PowerShell
+    echo
+    echo
+    echo "When installing PowerShell Core, OpenSUSE may report that nothing provides libcurl. libcurl should already be installed on supported versions of OpenSUSE. Run zypper search libcurl to confirm. The error will present 2 'solutions'. Choose 'Solution 2' to continue installing PowerShell Core."
+    echo
+    echo
     sudo zypper install powershell && echo "The latest version of Powershell Core has been installed..."
 
 #Azure RM NetCore Preview Module Install
-    echo .
+    echo
     echo "This script will now install the AzureRM Modules..."
-    echo .
+    echo
+    echo
     sudo pwsh -Command Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
     sudo pwsh -Command Install-Module -Name AzureRM.Netcore
     sudo pwsh -Command Import-Module -Name AzureRM.Netcore
@@ -30,8 +37,9 @@ echo .
 #Install Azure CLI 2.0
     #Address https://docs.microsoft.com/en-us/cli/azure/install-azure-cli
     #Github https://github.com/Azure/azure-cli/releases
-
-    read -p "Would you also like to install Azure CLI? y/n" -n 1 -r
+    echo
+    echo
+    read -p "Would you also like to install Azure CLI? y/n " -n 1 -r
     echo    # (optional) move to a new line
     if [[ $REPLY =~ ^[Yy]$ ]]
     then
