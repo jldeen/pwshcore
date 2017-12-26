@@ -1,6 +1,6 @@
 #!/bin/bash
 # script version
-ver=1.0
+ver=1.1
 # passwd capture function
 function capturePass {
     # password capture
@@ -276,12 +276,17 @@ function installAzCli {
         done
     }   | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure CLI 2.0" 6 60 0  
 }
+
+# Package Management Check
 function azCliCheck {
-    rpm -qa '*release*' > /dev/null 2>&1 
-    if [ $? -eq 0 ]; then
-    rpmAzInstall
-    else 
+    # Debian
+    if [ -f /etc/debian_version ]; then
     installAzCli
+    # Rhel and CentOS
+    elif [ -f /etc/redhat-release ]; then
+    rpmAzInstall
+    else
+        echo "Cannot install Azure CLI. Package manager could not be determeined. Please open an issue." > ~/err_pwshcore.log
     fi
 }          
 function about {
