@@ -29,6 +29,7 @@ function envSelection {
     "ubuntu17" "17.04" \
     "debian8" "Debian 8" \
     "debian9" "Debian 9" \
+    "opensuse42" "OpenSUSE 42" \
     "centos7" "CentOS 7" \
     "rhel7" "RHEL 7" \
     "back" "Back to main menu" 3>&2 2>&1 1>&3) 
@@ -44,6 +45,8 @@ function envSelection {
         debian8) installDebian8
         ;;
         debian9) installDebian9
+        ;;
+        openSuse42) installOpenSuse42
         ;;
         centos7) installCentos7
         ;;
@@ -132,6 +135,25 @@ function installDebian9 {
     } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Debian 9" 6 60 0
     end
 } 
+function installOpenSuse42 {
+    {
+        for ((i=0; i<=100; i+=20)); do
+            # sudo -S - auth sudo in advance
+            sudo -S <<< $psw ls > /dev/null 2>&1
+            # Register the Microsoft signature key
+            sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+            # Add the Microsoft Product feed
+            curl https://packages.microsoft.com/config/rhel/7/prod.repo | sudo tee /etc/zypp/repos.d/microsoft.repo
+            # Update the list of products
+            sudo zypper update
+            # Install PowerShell
+            sudo zypper install powershell
+            sleep 1
+            echo $i
+        done
+    } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for CentOS 7" 6 60 0
+    end
+}
 function installCentos7 {
     {
         for ((i=0; i<=100; i+=20)); do
@@ -255,6 +277,20 @@ function rpmAzInstall {
         done
         } | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure CLI 2.0 for RPM" 6 60 0
 }
+function zypAzInstall {
+    {
+        for ((i=0; i<=100; i+=20)); do
+            # sudo -S - auth sudo in advance
+            sudo -S <<< $psw ls > /dev/null 2>&1
+            sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+            sudo sh -c 'echo -e "[azure-cli]\nname=Azure CLI\nbaseurl=https://packages.microsoft.com/yumrepos/azure-cli\nenabled=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/zypp/repos.d/azure-cli.repo'
+            sudo zypper refresh > /dev/null 2>&1
+            sudo zypper install azure-cli
+            sleep 1
+            echo $i
+        done
+        } | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure CLI 2.0 for RPM" 6 60 0
+}
 function installAzCli {
     {  
         for ((i=0; i<=100; i+=20)); do
@@ -276,12 +312,20 @@ function installAzCli {
         done
     }   | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure CLI 2.0" 6 60 0  
 }
+
+# Package Management Check
 function azCliCheck {
-    rpm -qa '*release*' > /dev/null 2>&1 
-    if [ $? -eq 0 ]; then
-    rpmAzInstall
-    else 
+    # Debian
+    if [ -f /etc/debian_version ]; then
     installAzCli
+    # Rhel
+    elif [ -f /etc/redhat-release ]; then
+    rpmAzInstall
+    # Suse
+    elif [ -f /etc/SuSE-release ]; then 
+    zypAzInstall
+    else
+        echo "Cannot install Azure CLI. Package manager could not be determeined. Please open an issue." > ~/err_pwshcore.log
     fi
 }          
 function about {
