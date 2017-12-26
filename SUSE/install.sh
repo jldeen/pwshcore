@@ -17,6 +17,9 @@ echo
     echo "When installing PowerShell Core, OpenSUSE may report that nothing provides libcurl. libcurl should already be installed on supported versions of OpenSUSE. Run zypper search libcurl to confirm. The error will present 2 'solutions'. Choose 'Solution 2' to continue installing PowerShell Core."
     echo
     echo
+    read -p "Press enter to continue..."
+    echo 
+    echo
     sudo zypper install powershell && echo "The latest version of Powershell Core has been installed..."
 
 #Azure RM NetCore Preview Module Install
