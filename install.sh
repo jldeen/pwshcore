@@ -1,6 +1,15 @@
 #!/bin/bash
 # script version
-ver=1.0
+ver=1.2
+#Suse Pre-Req install
+if [ -f /etc/SuSE-release ] ; then
+    whiptail > /dev/null 2>&1
+    exitstatus=$?
+    if [ $exitstatus != 0 ]; then
+    sudo zypper --non-interactive install newt
+    fi
+fi
+
 # passwd capture function
 function capturePass {
     # password capture
@@ -100,7 +109,7 @@ function installDebian8 {
             sudo apt-get update
             sudo apt-get install apt-transport-https -y
             # Import the public repository GPG keys
-            curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+            curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add - > /dev/null 2>&1
             # Register the Microsoft Product feed
             sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-debian-jessie-prod jessie main" > /etc/apt/sources.list.d/microsoft.list'
             # Update the list of products
@@ -138,16 +147,51 @@ function installDebian9 {
 function installOpenSuse42 {
     {
         for ((i=0; i<=100; i+=20)); do
-            # sudo -S - auth sudo in advance
-            sudo -S <<< $psw ls > /dev/null 2>&1
-            # Register the Microsoft signature key
-            sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
-            # Add the Microsoft Product feed
-            curl https://packages.microsoft.com/config/rhel/7/prod.repo | sudo tee /etc/zypp/repos.d/microsoft.repo
-            # Update the list of products
-            sudo zypper update
-            # Install PowerShell
-            sudo zypper install powershell
+
+            # Pre-reqs
+            sudo zypper --non-interactive install \
+            glibc-locale \
+            glibc-i18ndata \
+            tar \
+            curl \
+            libunwind \
+            libicu \
+            openssl \
+            && zypper --non-interactive clean --all
+
+            # Install
+            release=`curl https://api.github.com/repos/powershell/powershell/releases/latest | sed '/tag_name/!d' | sed s/\"tag_name\"://g | sed s/\"//g | sed s/v//g | sed s/,//g | sed s/\ //g`
+
+            #DIRECT DOWNLOAD
+            pwshlink=/usr/bin/pwsh
+            package=powershell-${release}-linux-x64.tar.gz
+            downloadurl=https://github.com/PowerShell/PowerShell/releases/download/v$release/$package
+
+            echo "Destination file: $package"
+            echo "Source URL: $downloadurl"
+
+            curl -L -o "$package" "$downloadurl"
+
+            ## Create the target folder where powershell will be placed
+            sudo mkdir -p /opt/microsoft/powershell/$release
+            ## Expand powershell to the target folder
+            sudo tar zxf $package -C /opt/microsoft/powershell/$release
+
+            ## Change the mode of 'pwsh' to 'rwxr-xr-x' to allow execution
+            sudo chmod 755 /opt/microsoft/powershell/$release/pwsh
+            ## Create the symbolic link that points to powershell
+            sudo ln -sfn /opt/microsoft/powershell/$release/pwsh $pwshlink
+
+            ## Add the symbolic link path to /etc/shells
+            if [ ! -f /etc/shells ] ; then
+                echo $pwshlink | sudo tee /etc/shells ;
+            else
+                grep -q "^${pwshlink}$" /etc/shells || echo $pwshlink | sudo tee --append /etc/shells > /dev/null ;
+            fi
+
+            ## Remove the downloaded package file
+            rm -f $package
+
             sleep 1
             echo $i
         done
