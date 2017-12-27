@@ -46,7 +46,7 @@ function envSelection {
         ;;
         debian9) installDebian9
         ;;
-        openSuse42) installOpenSuse42
+        opensuse42) installOpenSuse42
         ;;
         centos7) installCentos7
         ;;
