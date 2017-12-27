@@ -169,8 +169,8 @@ function installOpenSuse42 {
             curl \
             libunwind \
             libicu \
-            openssl \
-            && zypper --non-interactive clean --all > /dev/null 2>&1
+            openssl \ > /dev/null 2>&1
+            sudo zypper --non-interactive clean --all > /dev/null 2>&1
 
             # Install
             release=`curl https://api.github.com/repos/powershell/powershell/releases/latest | sed '/tag_name/!d' | sed s/\"tag_name\"://g | sed s/\"//g | sed s/v//g | sed s/,//g | sed s/\ //g`
