@@ -5,15 +5,21 @@ ver=1.2
 if [ -f /etc/SuSE-release ] ; then
     whiptail > /dev/null 2>&1
     exitstatus=$?
-    if [ $exitstatus != 0 ]; then
-    echo "Whiptail not found. Whiptail is required for this PowerShell Installation GUI Script. Now installing Newt package with Whiptail..."
-    echo
-    echo
-    echo "Please wait..."
-    sudo zypper --non-interactive install newt && echo "Successfully installed Newt with Whiptail. PowerShell Core Install script will now proceed."
-    echo 
-    echo
-    fi
+        if [ $exitstatus != 0 ]; then
+        echo "Whiptail not found. Whiptail is required for this PowerShell Installation GUI Script."
+        echo
+        read -p "Press enter to install Whiptail..."
+        echo
+        echo "Now installing Newt package with Whiptail..."
+        echo
+        echo
+        echo "Please wait..."
+        sudo zypper --non-interactive install newt && echo "Successfully installed Newt with Whiptail. PowerShell Core Install script will now proceed."
+        echo 
+        echo
+        fi
+    else 
+    do_main_menu
 fi
 
 ### Begin GUI install...
@@ -164,7 +170,7 @@ function installOpenSuse42 {
             libunwind \
             libicu \
             openssl \
-            && zypper --non-interactive clean --all
+            && zypper --non-interactive clean --all > /dev/null 2>&1
 
             # Install
             release=`curl https://api.github.com/repos/powershell/powershell/releases/latest | sed '/tag_name/!d' | sed s/\"tag_name\"://g | sed s/\"//g | sed s/v//g | sed s/,//g | sed s/\ //g`
@@ -174,15 +180,12 @@ function installOpenSuse42 {
             package=powershell-${release}-linux-x64.tar.gz
             downloadurl=https://github.com/PowerShell/PowerShell/releases/download/v$release/$package
 
-            echo "Destination file: $package"
-            echo "Source URL: $downloadurl"
-
-            curl -L -o "$package" "$downloadurl"
+            curl -L -o "$package" "$downloadurl" > /dev/null 2>&1
 
             ## Create the target folder where powershell will be placed
             sudo mkdir -p /opt/microsoft/powershell/$release
             ## Expand powershell to the target folder
-            sudo tar zxf $package -C /opt/microsoft/powershell/$release
+            sudo tar zxf $package -C /opt/microsoft/powershell/$release > /dev/null 2>&1
 
             ## Change the mode of 'pwsh' to 'rwxr-xr-x' to allow execution
             sudo chmod 755 /opt/microsoft/powershell/$release/pwsh
