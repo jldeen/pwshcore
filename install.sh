@@ -372,6 +372,9 @@ function azCliCheck {
     # Suse
     elif [ -f /etc/SuSE-release ]; then 
     zypAzInstall
+    # Rhel and CentOS
+    elif [ -f /etc/redhat-release ]; then
+    rpmAzInstall
     else
         echo "Cannot install Azure CLI. Package manager could not be determeined. Please open an issue." > ~/err_pwshcore.log
     fi
