@@ -342,7 +342,7 @@ function zypAzInstall {
             sleep 1
             echo $i
         done
-        } | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure CLI 2.0 for RPM" 6 60 0
+        } | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure CLI 2.0 for Zypper" 6 60 0
 }
 function installAzCli {
     {  
@@ -365,7 +365,6 @@ function installAzCli {
         done
     }   | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure CLI 2.0" 6 60 0  
 }
-
 # Package Management Check
 function azCliCheck {
     # Debian
