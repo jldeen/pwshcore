@@ -28,4 +28,5 @@ sudo sed -i '\|^/usr/bin/pwsh|d' /etc/shells
 ```
 ![pwsh preview](images/example.GIF)
 
-### Full blog post available on my blog [jessicadeen.com](http://jessicadeen.com/linux/powershell-core-master/) 
+### Full blog post available on my blog [jessicadeen.com](http://jessicadeen.com/linux/powershell-core-master/)
+### Master [PowerShell Core GitHub](https://github.com/PowerShell/PowerShell) 
