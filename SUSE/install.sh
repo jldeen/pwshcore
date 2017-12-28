@@ -3,24 +3,46 @@ echo "This script will install the latest version of PowerShell Core on your Ope
 echo
 echo
 # PowerShell Install
-    # sudo -S - auth sudo in advance
-    sudo -S <<< $psw ls > /dev/null 2>&1
-    # Register the Microsoft signature key
-    sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
-    # Add the Microsoft Product feed
-    curl https://packages.microsoft.com/config/rhel/7/prod.repo | sudo tee /etc/zypp/repos.d/microsoft.repo
-    # Update the list of products
-    sudo zypper update
-    # Install PowerShell
-    echo
-    echo
-    echo "When installing PowerShell Core, OpenSUSE may report that nothing provides libcurl. libcurl should already be installed on supported versions of OpenSUSE. Run zypper search libcurl to confirm. The error will present 2 'solutions'. Choose 'Solution 2' to continue installing PowerShell Core."
-    echo
-    echo
-    read -p "Press enter to continue..."
-    echo 
-    echo
-    sudo zypper install powershell && echo "The latest version of Powershell Core has been installed..."
+    # Pre-reqs
+        sudo zypper --non-interactive install \
+        glibc-locale \
+        glibc-i18ndata \
+        tar \
+        curl \
+        libunwind \
+        libicu \
+        openssl > /dev/null 2>&1
+        sudo zypper --non-interactive clean --all > /dev/null 2>&1
+
+        # Install
+        release=`curl -s https://api.github.com/repos/powershell/powershell/releases/latest | sed '/tag_name/!d' | sed s/\"tag_name\"://g | sed s/\"//g | sed s/v//g | sed s/,//g | sed s/\ //g`
+
+        #DIRECT DOWNLOAD
+        pwshlink=/usr/bin/pwsh
+        package=powershell-${release}-linux-x64.tar.gz
+        downloadurl=https://github.com/PowerShell/PowerShell/releases/download/v$release/$package
+
+        curl -L -o "$package" "$downloadurl" > /dev/null 2>&1
+
+        ## Create the target folder where powershell will be placed
+        sudo mkdir -p /opt/microsoft/powershell/$release
+        ## Expand powershell to the target folder
+        sudo tar zxf $package -C /opt/microsoft/powershell/$release > /dev/null 2>&1
+
+        ## Change the mode of 'pwsh' to 'rwxr-xr-x' to allow execution
+        sudo chmod 755 /opt/microsoft/powershell/$release/pwsh
+        ## Create the symbolic link that points to powershell
+        sudo ln -sfn /opt/microsoft/powershell/$release/pwsh $pwshlink
+
+        ## Add the symbolic link path to /etc/shells
+        if [ ! -f /etc/shells ] ; then
+            echo $pwshlink | sudo tee /etc/shells ;
+        else
+            grep -q "^${pwshlink}$" /etc/shells || echo $pwshlink | sudo tee --append /etc/shells > /dev/null ;
+        fi
+
+        ## Remove the downloaded package file
+        rm -f $package
 
 #Azure RM NetCore Preview Module Install
     echo
@@ -50,8 +72,8 @@ echo
         sudo -S <<< $psw ls > /dev/null 2>&1
         sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
         sudo sh -c 'echo -e "[azure-cli]\nname=Azure CLI\nbaseurl=https://packages.microsoft.com/yumrepos/azure-cli\nenabled=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/zypp/repos.d/azure-cli.repo'
-        sudo zypper refresh > /dev/null 2>&1
-        sudo zypper install azure-cli
+        sudo zypper --gpg-auto-import-keys --no-gpg-checks -q refresh
+        sudo zypper --non-interactive -q install azure-cli
     else 
         echo "You chose not to install Azure CLI 2.0... Exiting now."
     fi
