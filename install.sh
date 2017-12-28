@@ -337,8 +337,8 @@ function zypAzInstall {
             sudo -S <<< $psw ls > /dev/null 2>&1
             sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
             sudo sh -c 'echo -e "[azure-cli]\nname=Azure CLI\nbaseurl=https://packages.microsoft.com/yumrepos/azure-cli\nenabled=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/zypp/repos.d/azure-cli.repo'
-            sudo zypper --non-interactive refresh > /dev/null 2>&1
-            sudo zypper --non-interactive install azure-cli
+            sudo zypper --gpg-auto-import-keys --no-gpg-checks -q refresh
+            sudo zypper --non-interactive -q install azure-cli
             sleep 1
             echo $i
         done
