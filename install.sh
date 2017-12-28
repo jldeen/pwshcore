@@ -160,7 +160,6 @@ function installDebian9 {
 function installOpenSuse42 {
     {
         for ((i=0; i<=100; i+=20)); do
-
             # Pre-reqs
             sudo zypper --non-interactive install \
             glibc-locale \
@@ -169,11 +168,11 @@ function installOpenSuse42 {
             curl \
             libunwind \
             libicu \
-            openssl \ > /dev/null 2>&1
+            openssl > /dev/null 2>&1
             sudo zypper --non-interactive clean --all > /dev/null 2>&1
 
             # Install
-            release=`curl https://api.github.com/repos/powershell/powershell/releases/latest | sed '/tag_name/!d' | sed s/\"tag_name\"://g | sed s/\"//g | sed s/v//g | sed s/,//g | sed s/\ //g`
+            release=$(curl -s https://api.github.com/repos/powershell/powershell/releases/latest) | sed '/tag_name/!d' | sed s/\"tag_name\"://g | sed s/\"//g | sed s/v//g | sed s/,//g | sed s/\ //g
 
             #DIRECT DOWNLOAD
             pwshlink=/usr/bin/pwsh
@@ -205,7 +204,7 @@ function installOpenSuse42 {
             sleep 1
             echo $i
         done
-    } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for CentOS 7" 6 60 0
+    } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for OpenSUSE" 6 60 0
     end
 }
 function installCentos7 {
