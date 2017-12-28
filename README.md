@@ -16,6 +16,8 @@ Currently supported distros:
 - CentOS 7
 - OpenSUSE 42
 
+#### WSL (Bash on Ubuntu on Windows 10 aka Windows Subsystem for Linux) is not currently suppored at this time.
+
 ### OpenSUSE Disclaimer
 Note: As of 12/27/17 OpenSUSE 42 is now supported. However, unlike the other supported distros, this version installs pwshcore via __direct download__. Until the repo version is officially supported without any human interaction, this script will install PowerShell Core using the direct download method. 
 
