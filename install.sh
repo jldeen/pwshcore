@@ -3,7 +3,7 @@
 ver=1.2
 #SUSE Whiptail Pre-Req Install 
 if [ -f /etc/SuSE-release ] ; then
-    whiptail > /dev/null 2>&1
+    whiptail -v > /dev/null 2>&1
     exitstatus=$?
         if [ $exitstatus != 0 ]; then
         echo "Whiptail not found. Whiptail is required for this PowerShell Installation GUI Script."
