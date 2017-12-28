@@ -12,16 +12,12 @@ if [ -f /etc/SuSE-release ] ; then
         echo
         echo "Now installing Newt package with Whiptail..."
         echo
-        echo
         echo "Please wait..."
         sudo zypper --non-interactive install newt && echo "Successfully installed Newt with Whiptail. PowerShell Core Install script will now proceed."
         echo 
         echo
         fi
-    else 
-    do_main_menu
 fi
-
 ### Begin GUI install...
 # passwd capture function
 function capturePass {
@@ -204,7 +200,7 @@ function installOpenSuse42 {
             sleep 1
             echo $i
         done
-    } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for OpenSUSE" 6 60 0
+    } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for OpenSUSE 42" 6 60 0
     end
 }
 function installCentos7 {
@@ -314,7 +310,7 @@ function installAzureRM {
         sleep 1
         echo $i
         done
-    } | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure RM Modules" 8 78 0
+    } | whiptail --title "PowerShell Core Installer" --gauge "Installing AzureRM Modules" 8 78 0
 }
 function rpmAzInstall {
     {
@@ -393,8 +389,7 @@ function end {
     whiptail --title "PowerShell Core Installation" --msgbox "PowerShell Core Installer has completed successfully." 8 78
 }
 #------------------------------------------------------------------------------
-function do_main_menu ()
-    {
+function do_main_menu () {
     SELECTION=$(whiptail --title "PowerShell Core Install Assist $ver" --menu "Arrow/Enter Selects or Tab Key" 20 70 10 --cancel-button Quit --ok-button Select \
     "a " "PowerShell Core Install Only" \
     "b " "PowerShell Core Install + AzureRM Modules" \
