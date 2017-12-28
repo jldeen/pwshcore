@@ -1,6 +1,24 @@
 #!/bin/bash
 # script version
-ver=1.1
+ver=1.2
+#SUSE Whiptail Pre-Req Install 
+if [ -f /etc/SuSE-release ] ; then
+    whiptail -v > /dev/null 2>&1
+    exitstatus=$?
+        if [ $exitstatus != 0 ]; then
+        echo "Whiptail not found. Whiptail is required for this PowerShell Installation GUI Script."
+        echo
+        read -p "Press enter to install Whiptail..."
+        echo
+        echo "Now installing Newt package with Whiptail..."
+        echo
+        echo "Please wait..."
+        sudo zypper --non-interactive install newt && echo "Successfully installed Newt with Whiptail. PowerShell Core Install script will now proceed."
+        echo 
+        echo
+        fi
+fi
+### Begin GUI install...
 # passwd capture function
 function capturePass {
     # password capture
@@ -29,6 +47,7 @@ function envSelection {
     "ubuntu17" "17.04" \
     "debian8" "Debian 8" \
     "debian9" "Debian 9" \
+    "opensuse42" "OpenSUSE 42" \
     "centos7" "CentOS 7" \
     "rhel7" "RHEL 7" \
     "back" "Back to main menu" 3>&2 2>&1 1>&3) 
@@ -44,6 +63,8 @@ function envSelection {
         debian8) installDebian8
         ;;
         debian9) installDebian9
+        ;;
+        opensuse42) installOpenSuse42
         ;;
         centos7) installCentos7
         ;;
@@ -97,7 +118,7 @@ function installDebian8 {
             sudo apt-get update
             sudo apt-get install apt-transport-https -y
             # Import the public repository GPG keys
-            curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+            curl -s https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add - > /dev/null 2>&1
             # Register the Microsoft Product feed
             sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-debian-jessie-prod jessie main" > /etc/apt/sources.list.d/microsoft.list'
             # Update the list of products
@@ -132,6 +153,56 @@ function installDebian9 {
     } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for Debian 9" 6 60 0
     end
 } 
+function installOpenSuse42 {
+    {
+        for ((i=0; i<=100; i+=20)); do
+            # Pre-reqs
+            sudo zypper --non-interactive install \
+            glibc-locale \
+            glibc-i18ndata \
+            tar \
+            curl \
+            libunwind \
+            libicu \
+            openssl > /dev/null 2>&1
+            sudo zypper --non-interactive clean --all > /dev/null 2>&1
+
+            # Install
+            release=`curl -s https://api.github.com/repos/powershell/powershell/releases/latest | sed '/tag_name/!d' | sed s/\"tag_name\"://g | sed s/\"//g | sed s/v//g | sed s/,//g | sed s/\ //g`
+
+            #DIRECT DOWNLOAD
+            pwshlink=/usr/bin/pwsh
+            package=powershell-${release}-linux-x64.tar.gz
+            downloadurl=https://github.com/PowerShell/PowerShell/releases/download/v$release/$package
+
+            curl -L -o "$package" "$downloadurl" > /dev/null 2>&1
+
+            ## Create the target folder where powershell will be placed
+            sudo mkdir -p /opt/microsoft/powershell/$release
+            ## Expand powershell to the target folder
+            sudo tar zxf $package -C /opt/microsoft/powershell/$release > /dev/null 2>&1
+
+            ## Change the mode of 'pwsh' to 'rwxr-xr-x' to allow execution
+            sudo chmod 755 /opt/microsoft/powershell/$release/pwsh
+            ## Create the symbolic link that points to powershell
+            sudo ln -sfn /opt/microsoft/powershell/$release/pwsh $pwshlink
+
+            ## Add the symbolic link path to /etc/shells
+            if [ ! -f /etc/shells ] ; then
+                echo $pwshlink | sudo tee /etc/shells ;
+            else
+                grep -q "^${pwshlink}$" /etc/shells || echo $pwshlink | sudo tee --append /etc/shells > /dev/null ;
+            fi
+
+            ## Remove the downloaded package file
+            rm -f $package
+
+            sleep 1
+            echo $i
+        done
+    } | whiptail --title "PowerShell Core Installer" --gauge "Installing PowerShell Core for OpenSUSE 42" 6 60 0
+    end
+}
 function installCentos7 {
     {
         for ((i=0; i<=100; i+=20)); do
@@ -239,7 +310,7 @@ function installAzureRM {
         sleep 1
         echo $i
         done
-    } | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure RM Modules" 8 78 0
+    } | whiptail --title "PowerShell Core Installer" --gauge "Installing AzureRM Modules" 8 78 0
 }
 function rpmAzInstall {
     {
@@ -254,6 +325,20 @@ function rpmAzInstall {
             echo $i
         done
         } | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure CLI 2.0 for RPM" 6 60 0
+}
+function zypAzInstall {
+    {
+        for ((i=0; i<=100; i+=20)); do
+            # sudo -S - auth sudo in advance
+            sudo -S <<< $psw ls > /dev/null 2>&1
+            sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+            sudo sh -c 'echo -e "[azure-cli]\nname=Azure CLI\nbaseurl=https://packages.microsoft.com/yumrepos/azure-cli\nenabled=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/zypp/repos.d/azure-cli.repo'
+            sudo zypper --gpg-auto-import-keys --no-gpg-checks -q refresh
+            sudo zypper --non-interactive -q install azure-cli
+            sleep 1
+            echo $i
+        done
+        } | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure CLI 2.0 for Zypper" 6 60 0
 }
 function installAzCli {
     {  
@@ -276,12 +361,17 @@ function installAzCli {
         done
     }   | whiptail --title "PowerShell Core Installer" --gauge "Installing Azure CLI 2.0" 6 60 0  
 }
-
 # Package Management Check
 function azCliCheck {
     # Debian
     if [ -f /etc/debian_version ]; then
     installAzCli
+    # Rhel
+    elif [ -f /etc/redhat-release ]; then
+    rpmAzInstall
+    # Suse
+    elif [ -f /etc/SuSE-release ]; then 
+    zypAzInstall
     # Rhel and CentOS
     elif [ -f /etc/redhat-release ]; then
     rpmAzInstall
@@ -302,8 +392,7 @@ function end {
     whiptail --title "PowerShell Core Installation" --msgbox "PowerShell Core Installer has completed successfully." 8 78
 }
 #------------------------------------------------------------------------------
-function do_main_menu ()
-    {
+function do_main_menu () {
     SELECTION=$(whiptail --title "PowerShell Core Install Assist $ver" --menu "Arrow/Enter Selects or Tab Key" 20 70 10 --cancel-button Quit --ok-button Select \
     "a " "PowerShell Core Install Only" \
     "b " "PowerShell Core Install + AzureRM Modules" \
