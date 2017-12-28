@@ -4,7 +4,7 @@
 To use, run from your terminal:
 
 ```
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/jldeen/pwshcore/dev/install.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/jldeen/pwshcore/install.sh)"
 ```
 Currently supported distros:
 - Ubuntu 14
